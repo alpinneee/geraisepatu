@@ -108,7 +108,8 @@ class ProfileController extends Controller
     {
         // Check if order belongs to user
         if ($order->user_id !== Auth::id()) {
-            abort(403, 'You do not have permission to view this order.');
+            return redirect()->route('profile.orders')
+                ->with('error', 'Order not found or you do not have permission to view this order.');
         }
         
         $order->load('items.product');
