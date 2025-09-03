@@ -71,7 +71,18 @@ class Category extends Model
      */
     public function getImageUrlAttribute()
     {
-        return $this->image ? asset('storage/' . $this->image) : null;
+        if (!$this->image) {
+            return null;
+        }
+        
+        $url = asset('storage/' . $this->image);
+        
+        // Force HTTPS in production
+        if (app()->environment('production') || request()->isSecure()) {
+            $url = str_replace('http://', 'https://', $url);
+        }
+        
+        return $url;
     }
 
     /**
