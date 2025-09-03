@@ -1,5 +1,5 @@
 <?php
-// Simple Laravel bootstrap
+// Simple Laravel bootstrap without .env check
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
