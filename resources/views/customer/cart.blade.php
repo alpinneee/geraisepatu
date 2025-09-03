@@ -55,86 +55,85 @@
                     </div>
                 </div>
             @else
-                <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-12">
+                <div class="flex flex-col lg:flex-row gap-8">
                     <!-- Cart Items -->
-                    <div class="lg:col-span-8">
-                        <div class="border-t border-gray-200">
+                    <div class="flex-1">
+                        <div class="space-y-4">
                             @foreach($cartItems as $item)
-                                <div class="flex py-6 border-b border-gray-200" id="cart-item-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}">
-                                    <!-- Product Image -->
-                                    <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                        @if($item->product->images->isNotEmpty())
-                                            <img src="{{ asset('storage/' . $item->product->images->where('is_primary', true)->first()->image_path) }}" 
-                                                alt="{{ $item->product->name }}" 
-                                                class="h-full w-full object-cover object-center">
-                                        @else
-                                            <div class="flex h-full w-full items-center justify-center bg-gray-100">
-                                                <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                                </svg>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    <!-- Product Info -->
-                                    <div class="ml-4 flex flex-1 flex-col">
-                                        <div>
-                                            <div class="flex justify-between text-base font-medium text-gray-900">
-                                                <h3>
-                                                    <a href="{{ route('products.show', $item->product->slug) }}">{{ $item->product->name }}</a>
-                                                </h3>
-                                                <p class="ml-4 text-right">
-                                                    @if($item->product->discount_price)
-                                                        <span>Rp {{ number_format($item->product->discount_price, 0, ',', '.') }}</span>
-                                                        <span class="text-sm text-gray-500 line-through">Rp {{ number_format($item->product->price, 0, ',', '.') }}</span>
-                                                    @else
-                                                        <span>Rp {{ number_format($item->product->price, 0, ',', '.') }}</span>
-                                                    @endif
-                                                </p>
-                                            </div>
-                                            <p class="mt-1 text-sm text-gray-500">Kategori: {{ $item->product->category->name }}</p>
-                                            @if($item->size)
-                                                <p class="mt-1 text-sm text-gray-500">Ukuran: {{ $item->size }}</p>
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm" id="cart-item-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}">
+                                    <div class="flex flex-col sm:flex-row gap-4">
+                                        <!-- Product Image -->
+                                        <div class="w-full sm:w-24 h-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                            @if($item->product->images->isNotEmpty())
+                                                <img src="{{ asset('storage/' . $item->product->images->where('is_primary', true)->first()->image_path) }}" 
+                                                    alt="{{ $item->product->name }}" 
+                                                    class="h-full w-full object-cover object-center">
+                                            @else
+                                                <div class="flex h-full w-full items-center justify-center bg-gray-100">
+                                                    <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                </div>
                                             @endif
                                         </div>
-                                        <div class="flex flex-1 items-end justify-between text-sm">
-                                            <!-- Quantity -->
-                                            <div class="flex items-center">
-                                                <label for="quantity-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}" class="mr-2 text-gray-500">Jumlah:</label>
-                                                <div class="flex rounded-md shadow-sm">
-                                                    <button type="button" 
-                                                        class="decrement-quantity relative inline-flex items-center rounded-l-md border border-gray-300 bg-gray-50 px-2 py-1 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                                        data-product-id="{{ $item->product->id }}"
-                                                        data-size="{{ $item->size ?? '' }}">
-                                                        -
-                                                    </button>
-                                                    <input type="number" 
-                                                        id="quantity-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}" 
-                                                        name="quantity" 
-                                                        min="1" 
-                                                        max="{{ $item->product->stock }}" 
-                                                        value="{{ $item->quantity }}" 
-                                                        class="update-quantity block w-12 min-w-0 flex-1 rounded-none border-gray-300 px-1 py-1 text-center focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                                        data-product-id="{{ $item->product->id }}"
-                                                        data-size="{{ $item->size ?? '' }}">
-                                                    <button type="button" 
-                                                        class="increment-quantity relative inline-flex items-center rounded-r-md border border-gray-300 bg-gray-50 px-2 py-1 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                                        data-product-id="{{ $item->product->id }}"
-                                                        data-size="{{ $item->size ?? '' }}"
-                                                        data-max-stock="{{ $item->product->stock }}">
-                                                        +
-                                                    </button>
+
+                                        <!-- Product Info -->
+                                        <div class="flex-1 space-y-3">
+                                            <!-- Product Name & Price -->
+                                            <div class="flex flex-col sm:flex-row sm:justify-between">
+                                                <div class="flex-1">
+                                                    <h3 class="text-base font-medium text-gray-900">
+                                                        <a href="{{ route('products.show', $item->product->slug) }}">{{ $item->product->name }}</a>
+                                                    </h3>
+                                                    <p class="text-sm text-gray-500">{{ $item->product->category->name }}</p>
+                                                    @if($item->size)
+                                                        <p class="text-sm text-gray-500">Ukuran: {{ $item->size }}</p>
+                                                    @endif
+                                                </div>
+                                                <div class="text-right mt-2 sm:mt-0">
+                                                    @if($item->product->discount_price)
+                                                        <p class="text-base font-medium text-gray-900">Rp {{ number_format($item->product->discount_price, 0, ',', '.') }}</p>
+                                                        <p class="text-sm text-gray-500 line-through">Rp {{ number_format($item->product->price, 0, ',', '.') }}</p>
+                                                    @else
+                                                        <p class="text-base font-medium text-gray-900">Rp {{ number_format($item->product->price, 0, ',', '.') }}</p>
+                                                    @endif
                                                 </div>
                                             </div>
 
-                                            <!-- Subtotal & Remove -->
-                                            <div class="flex">
-                                                <p class="text-gray-500 mr-4">
-                                                    <span>Subtotal: </span>
-                                                    <span class="font-medium text-gray-900" id="subtotal-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}">
+                                            <!-- Quantity Controls -->
+                                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-sm text-gray-500">Jumlah:</span>
+                                                    <div class="flex rounded-md shadow-sm">
+                                                        <button type="button" 
+                                                            class="decrement-quantity px-3 py-1 text-sm border border-gray-300 rounded-l-md bg-gray-50 hover:bg-gray-100"
+                                                            data-product-id="{{ $item->product->id }}"
+                                                            data-size="{{ $item->size ?? '' }}">
+                                                            -
+                                                        </button>
+                                                        <input type="number" 
+                                                            id="quantity-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}" 
+                                                            min="1" max="{{ $item->product->stock }}" 
+                                                            value="{{ $item->quantity }}" 
+                                                            class="update-quantity w-16 px-2 py-1 text-center text-sm border-t border-b border-gray-300"
+                                                            data-product-id="{{ $item->product->id }}"
+                                                            data-size="{{ $item->size ?? '' }}">
+                                                        <button type="button" 
+                                                            class="increment-quantity px-3 py-1 text-sm border border-gray-300 rounded-r-md bg-gray-50 hover:bg-gray-100"
+                                                            data-product-id="{{ $item->product->id }}"
+                                                            data-size="{{ $item->size ?? '' }}"
+                                                            data-max-stock="{{ $item->product->stock }}">
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="text-right">
+                                                    <p class="text-sm text-gray-500">Subtotal:</p>
+                                                    <p class="text-base font-medium text-gray-900" id="subtotal-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}">
                                                         Rp {{ number_format($item->product->discount_price ? $item->product->discount_price * $item->quantity : $item->product->price * $item->quantity, 0, ',', '.') }}
-                                                    </span>
-                                                </p>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -159,12 +158,12 @@
                     </div>
 
                     <!-- Order Summary -->
-                    <div class="lg:col-span-4">
-                        <div class="rounded-lg bg-gray-50 p-6">
+                    <div class="w-full lg:w-80 lg:flex-shrink-0">
+                        <div class="sticky top-4 rounded-lg bg-gray-50 p-4 lg:p-6">
                             <h2 class="text-lg font-medium text-gray-900">Ringkasan Pesanan</h2>
                             
-                            <div class="mt-6 space-y-4">
-                                <div class="flex items-center justify-between border-t border-gray-200 pt-4">
+                            <div class="mt-4 space-y-3">
+                                <div class="flex items-center justify-between border-t border-gray-200 pt-3">
                                     <dt class="text-sm text-gray-600">Subtotal</dt>
                                     <dd class="text-sm font-medium text-gray-900">Rp {{ number_format($subtotal, 0, ',', '.') }}</dd>
                                 </div>
@@ -174,14 +173,14 @@
                                         <dd class="text-sm font-medium text-green-600">-Rp {{ number_format($discount, 0, ',', '.') }}</dd>
                                     </div>
                                 @endif
-                                <div class="flex items-center justify-between border-t border-gray-200 pt-4">
+                                <div class="flex items-center justify-between border-t border-gray-200 pt-3">
                                     <dt class="text-base font-medium text-gray-900">Total</dt>
                                     <dd class="text-base font-medium text-gray-900">Rp {{ number_format($total, 0, ',', '.') }}</dd>
                                 </div>
                             </div>
 
-                            <div class="mt-6">
-                                <a href="{{ route('checkout.index') }}" class="block w-full rounded-md bg-blue-600 px-3 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                            <div class="mt-4">
+                                <a href="{{ route('checkout.index') }}" class="block w-full rounded-md bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500">
                                     Lanjutkan ke Pembayaran
                                 </a>
                             </div>
