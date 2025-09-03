@@ -21,8 +21,8 @@
                 <!-- User Dropdown / Auth -->
                 <div>
                     @auth
-                        <div class="relative" x-data="{ profileOpen: false }" @click.away="profileOpen = false">
-                            <button @click="profileOpen = !profileOpen" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none">
+                        <div class="relative">
+                            <button id="profile-button" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none">
                                 @php
                                     $user = \Illuminate\Support\Facades\Auth::user();
                                     $avatarUrl = $user->avatar;
@@ -41,7 +41,7 @@
                                 <!-- Debug: {{ $finalAvatarUrl }} -->
                                 <img src="{{ $finalAvatarUrl }}" alt="{{ $user->name }}" class="w-7 h-7 rounded-full object-cover" onerror="console.log('Avatar failed to load:', this.src); this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=6366f1&color=fff';">
                             </button>
-                            <div x-show="profileOpen" x-transition class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2 z-50">
+                            <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2 z-50 hidden">
                                 <div class="px-4 py-2 border-b border-gray-100">
                                     <p class="text-sm font-medium text-gray-900">{{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
                                     <p class="text-xs text-gray-500">{{ \Illuminate\Support\Facades\Auth::user()->email }}</p>

@@ -49,17 +49,23 @@
 
     @stack('scripts')
     <script>
-        // Profile dropdown fallback
-        document.addEventListener('click', function(event) {
-            const profileDropdown = document.querySelector('[x-data*="profileOpen"]');
-            if (profileDropdown && !profileDropdown.contains(event.target)) {
-                // Close dropdown if clicking outside
-                const dropdown = profileDropdown.querySelector('[x-show="profileOpen"]');
-                if (dropdown && !dropdown.hasAttribute('hidden')) {
-                    dropdown.style.display = 'none';
+        // Profile dropdown functionality
+        const profileButton = document.getElementById('profile-button');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        
+        if (profileButton && profileDropdown) {
+            profileButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('hidden');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
                 }
-            }
-        });
+            });
+        }
 
         // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
