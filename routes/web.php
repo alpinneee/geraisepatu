@@ -79,6 +79,9 @@ Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function
     Route::get('/change-password', [CustomerProfileController::class, 'showChangePasswordForm'])->name('change-password');
     Route::put('/change-password', [CustomerProfileController::class, 'changePassword'])->name('update-password');
     Route::get('/orders', [CustomerProfileController::class, 'orders'])->name('orders');
+    Route::get('/orders/id', function() {
+        return redirect()->route('profile.orders')->with('error', 'Please select a specific order from the list.');
+    });
     Route::get('/orders/{order}', [CustomerProfileController::class, 'showOrder'])->name('orders.show')->where('order', '[0-9]+');
     Route::get('/addresses', [CustomerProfileController::class, 'addresses'])->name('addresses');
     Route::post('/addresses', [CustomerProfileController::class, 'storeAddress'])->name('addresses.store');
