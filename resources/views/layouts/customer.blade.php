@@ -49,11 +49,26 @@
 
     @stack('scripts')
     <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+        // Profile dropdown fallback
+        document.addEventListener('click', function(event) {
+            const profileDropdown = document.querySelector('[x-data*="profileOpen"]');
+            if (profileDropdown && !profileDropdown.contains(event.target)) {
+                // Close dropdown if clicking outside
+                const dropdown = profileDropdown.querySelector('[x-show="profileOpen"]');
+                if (dropdown && !dropdown.hasAttribute('hidden')) {
+                    dropdown.style.display = 'none';
+                }
+            }
         });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', function() {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            });
+        }
 
         // Wishlist functionality
         function toggleWishlist(productId) {
