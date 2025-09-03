@@ -158,32 +158,30 @@
                     </div>
 
                     <!-- Order Summary -->
-                    <div class="w-full lg:w-80 lg:flex-shrink-0">
-                        <div class="sticky top-4 rounded-lg bg-gray-50 p-4 lg:p-6">
-                            <h2 class="text-lg font-medium text-gray-900">Ringkasan Pesanan</h2>
+                    <div class="w-full lg:w-72 lg:flex-shrink-0">
+                        <div class="sticky top-4 rounded-lg bg-gray-50 p-4">
+                            <h2 class="text-base font-medium text-gray-900 mb-3">Ringkasan Pesanan</h2>
                             
-                            <div class="mt-4 space-y-3">
-                                <div class="flex items-center justify-between border-t border-gray-200 pt-3">
-                                    <dt class="text-sm text-gray-600">Subtotal</dt>
-                                    <dd class="text-sm font-medium text-gray-900">Rp {{ number_format($subtotal, 0, ',', '.') }}</dd>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600">Subtotal</span>
+                                    <span class="font-medium">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                                 </div>
                                 @if($discount > 0)
-                                    <div class="flex items-center justify-between">
-                                        <dt class="text-sm text-gray-600">Diskon</dt>
-                                        <dd class="text-sm font-medium text-green-600">-Rp {{ number_format($discount, 0, ',', '.') }}</dd>
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-600">Diskon</span>
+                                        <span class="font-medium text-green-600">-Rp {{ number_format($discount, 0, ',', '.') }}</span>
                                     </div>
                                 @endif
-                                <div class="flex items-center justify-between border-t border-gray-200 pt-3">
-                                    <dt class="text-base font-medium text-gray-900">Total</dt>
-                                    <dd class="text-base font-medium text-gray-900">Rp {{ number_format($total, 0, ',', '.') }}</dd>
+                                <div class="flex justify-between text-sm border-t border-gray-200 pt-2">
+                                    <span class="font-medium text-gray-900">Total</span>
+                                    <span class="font-medium text-gray-900">Rp {{ number_format($total, 0, ',', '.') }}</span>
                                 </div>
                             </div>
 
-                            <div class="mt-4">
-                                <a href="{{ route('checkout.index') }}" class="block w-full rounded-md bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500">
-                                    Lanjutkan ke Pembayaran
-                                </a>
-                            </div>
+                            <a href="{{ route('checkout.index') }}" class="block w-full mt-4 rounded-md bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-blue-500">
+                                Lanjutkan ke Pembayaran
+                            </a>
                         </div>
                     </div>
                 </div>
