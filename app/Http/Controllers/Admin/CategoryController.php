@@ -64,7 +64,7 @@ class CategoryController extends Controller
             $originalSlug = $slug;
             $count = 1;
             
-            while (Category::where('slug', $slug)->exists()) {
+            while (Category::withTrashed()->where('slug', $slug)->exists()) {
                 $slug = "{$originalSlug}-{$count}";
                 $count++;
             }
@@ -130,7 +130,7 @@ class CategoryController extends Controller
                 $originalSlug = $slug;
                 $count = 1;
                 
-                while (Category::where('slug', $slug)->where('id', '!=', $category->id)->exists()) {
+                while (Category::withTrashed()->where('slug', $slug)->where('id', '!=', $category->id)->exists()) {
                     $slug = "{$originalSlug}-{$count}";
                     $count++;
                 }
