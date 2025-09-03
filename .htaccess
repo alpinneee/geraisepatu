@@ -1,5 +1,12 @@
-# Simple redirect to public folder
-DirectoryIndex index.php
+RewriteEngine On
+
+# Handle Laravel routes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Serve assets from public folder
+RewriteRule ^(build|storage)/(.*)$ public/$1/$2 [L]
 
 # Security
 Options -Indexes
