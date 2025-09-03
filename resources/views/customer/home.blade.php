@@ -123,7 +123,7 @@
                     <a href="{{ route('products.category', $category->slug) }}" class="group border border-gray-200 rounded-md p-2 bg-white hover:shadow-sm transition flex flex-col items-center">
                         <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded bg-gray-100 flex items-center justify-center">
                             @if($category->image)
-                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="h-20 w-20 object-cover object-center group-hover:opacity-80 rounded bg-white">
+                                <img src="{{ $category->image_url }}" alt="{{ $category->name }}" class="h-20 w-20 object-cover object-center group-hover:opacity-80 rounded bg-white">
                             @else
                                 <div class="flex h-20 w-20 items-center justify-center bg-gray-100 group-hover:bg-gray-200 rounded">
                                     <span class="text-xs font-medium text-gray-600 text-center px-1">{{ substr($category->name, 0, 8) }}</span>
