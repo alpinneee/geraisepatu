@@ -75,10 +75,9 @@ class Category extends Model
             return null;
         }
         
+        // Always force HTTPS for geraisepatu.xyz domain
         $url = asset('storage/' . $this->image);
-        
-        // Force HTTPS in production
-        if (app()->environment('production') || request()->isSecure()) {
+        if (str_contains($url, 'geraisepatu.xyz')) {
             $url = str_replace('http://', 'https://', $url);
         }
         
