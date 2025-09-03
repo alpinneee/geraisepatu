@@ -1,2 +1,9 @@
 RewriteEngine On
-RewriteRule ^(.*)$ public/$1 [L]
+
+# Handle Laravel routes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Serve static files from public folder
+RewriteRule ^(css|js|images|fonts|storage)/(.*)$ public/$1/$2 [L]
