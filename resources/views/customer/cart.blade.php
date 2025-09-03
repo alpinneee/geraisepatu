@@ -63,7 +63,7 @@
                                 <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm" id="cart-item-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}">
                                     <div class="flex flex-col sm:flex-row gap-4">
                                         <!-- Product Image -->
-                                        <div class="w-full sm:w-24 h-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                        <div class="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 mx-auto sm:mx-0">
                                             @if($item->product->images->isNotEmpty())
                                                 <img src="{{ asset('storage/' . $item->product->images->where('is_primary', true)->first()->image_path) }}" 
                                                     alt="{{ $item->product->name }}" 
@@ -80,7 +80,7 @@
                                         <!-- Product Info -->
                                         <div class="flex-1 space-y-3">
                                             <!-- Product Name & Price -->
-                                            <div class="flex flex-col sm:flex-row sm:justify-between">
+                                            <div class="flex flex-col sm:flex-row sm:justify-between gap-2">
                                                 <div class="flex-1">
                                                     <h3 class="text-base font-medium text-gray-900">
                                                         <a href="{{ route('products.show', $item->product->slug) }}">{{ $item->product->name }}</a>
@@ -101,8 +101,8 @@
                                             </div>
 
                                             <!-- Quantity Controls -->
-                                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                                                <div class="flex items-center gap-2">
+                                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                                <div class="flex items-center justify-center sm:justify-start gap-2">
                                                     <span class="text-sm text-gray-500">Jumlah:</span>
                                                     <div class="flex rounded-md shadow-sm">
                                                         <button type="button" 
@@ -128,7 +128,7 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="text-right">
+                                                <div class="text-center sm:text-right">
                                                     <p class="text-sm text-gray-500">Subtotal:</p>
                                                     <p class="text-base font-medium text-gray-900" id="subtotal-{{ $item->product->id }}-{{ $item->size ?? 'no-size' }}">
                                                         Rp {{ number_format($item->product->discount_price ? $item->product->discount_price * $item->quantity : $item->product->price * $item->quantity, 0, ',', '.') }}
@@ -141,16 +141,16 @@
                             @endforeach
                         </div>
 
-                        <div class="mt-6 flex justify-between">
-                            <a href="{{ route('products.index') }}" class="flex items-center text-sm font-medium text-blue-600 hover:text-blue-500">
-                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <div class="mt-6 flex flex-col sm:flex-row justify-between gap-4">
+                            <a href="{{ route('products.index') }}" class="flex items-center justify-center sm:justify-start text-sm font-medium text-blue-600 hover:text-blue-500 px-4 py-2 border border-blue-600 rounded-md hover:bg-blue-50">
+                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                                 </svg>
                                 Lanjutkan Belanja
                             </a>
                             <form action="{{ route('cart.clear') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="text-sm font-medium text-red-600 hover:text-red-500">
+                                <button type="submit" class="w-full sm:w-auto text-sm font-medium text-red-600 hover:text-red-500 px-4 py-2 border border-red-600 rounded-md hover:bg-red-50" onclick="return confirm('Yakin ingin mengosongkan keranjang?')">
                                     Kosongkan Keranjang
                                 </button>
                             </form>
