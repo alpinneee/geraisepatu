@@ -1,12 +1,13 @@
 RewriteEngine On
 
+# Serve storage files directly
+RewriteCond %{REQUEST_URI} ^/storage/
+RewriteRule ^storage/(.*)$ public/storage/$1 [L]
+
 # Handle Laravel routes
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
-
-# Serve assets from public folder
-RewriteRule ^(build|storage)/(.*)$ public/$1/$2 [L]
+RewriteRule ^(.*)$ public/index.php [QSA,L]
 
 # Security
 Options -Indexes
