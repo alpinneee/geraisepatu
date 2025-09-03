@@ -3,36 +3,36 @@
 @section('title', 'Checkout')
 
 @section('content')
-<div class="max-w-6xl mx-auto py-8 px-4">
-    <h1 class="text-3xl font-bold mb-8 text-gray-900">Checkout</h1>
+<div class="max-w-6xl mx-auto py-4 sm:py-8 px-4">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-gray-900">Checkout</h1>
     
     @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 sm:mb-6 text-sm">
             {{ session('error') }}
         </div>
     @endif
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
         <!-- Order Summary -->
         <div class="lg:col-span-2">
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6 animate-fade-in">
-                <h2 class="text-xl font-semibold mb-4 text-gray-900">Ringkasan Pesanan</h2>
+            <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-4 sm:mb-6 animate-fade-in">
+                <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900">Ringkasan Pesanan</h2>
                 
-                <div class="space-y-4">
+                <div class="space-y-3 sm:space-y-4">
                     @foreach($cartItems as $item)
-                    <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
                         <img src="{{ $item->product->images->first()?->image_url ?? '/images/placeholder.jpg' }}" 
                              alt="{{ $item->product->name }}" 
-                             class="w-16 h-16 object-cover rounded">
-                        <div class="flex-1">
-                            <h3 class="font-medium text-gray-900">{{ $item->product->name }}</h3>
-                            <p class="text-sm text-gray-600">Qty: {{ $item->quantity }}</p>
+                             class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded">
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-medium text-gray-900 text-sm sm:text-base truncate">{{ $item->product->name }}</h3>
+                            <p class="text-xs sm:text-sm text-gray-600">Qty: {{ $item->quantity }}</p>
                         </div>
                         <div class="text-right">
-                            <p class="font-medium text-gray-900">
+                            <p class="font-medium text-gray-900 text-sm sm:text-base">
                                 Rp {{ number_format($item->product->discount_price ?? $item->product->price, 0, ',', '.') }}
                             </p>
-                            <p class="text-sm text-gray-600">
+                            <p class="text-xs sm:text-sm text-gray-600">
                                 Total: Rp {{ number_format(($item->product->discount_price ?? $item->product->price) * $item->quantity, 0, ',', '.') }}
                             </p>
                         </div>
@@ -42,13 +42,13 @@
             </div>
 
             <!-- Shipping Address Form -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6 animate-slide-up animation-delay-2000">
-                <h2 class="text-xl font-semibold mb-4 text-gray-900">Alamat Pengiriman</h2>
+            <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-4 sm:mb-6 animate-slide-up animation-delay-2000">
+                <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900">Alamat Pengiriman</h2>
                 
                 @if(\Illuminate\Support\Facades\Auth::check() && $shippingAddresses->count() > 0)
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Alamat Tersimpan</label>
-                    <select id="saved-address" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select id="saved-address" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih alamat tersimpan</option>
                         @foreach($shippingAddresses as $address)
                         <option value="{{ $address->id }}" 
@@ -58,7 +58,7 @@
                                 data-city="{{ $address->city }}"
                                 data-province="{{ $address->province }}"
                                 data-postal-code="{{ $address->postal_code }}">
-                            {{ $address->name }} - {{ $address->full_address }}
+                            {{ $address->name }} - {{ Str::limit($address->full_address, 40) }}
                         </option>
                         @endforeach
                     </select>
@@ -68,59 +68,59 @@
                 <form method="POST" action="{{ route('checkout.process') }}" id="checkout-form">
                     @csrf
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div class="sm:col-span-2">
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Penerima *</label>
                             <input type="text" id="name" name="name" value="{{ old('name') }}" required
-                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('name')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         
-                        <div>
+                        <div class="sm:col-span-2">
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                             <input type="email" id="email" name="email" value="{{ old('email', \Illuminate\Support\Facades\Auth::user()?->email) }}" required
-                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('email')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         
-                        <div>
+                        <div class="sm:col-span-2">
                             <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">No. Telepon *</label>
-                            <input type="text" id="phone" name="phone" value="{{ old('phone') }}" required
-                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                    placeholder="08xxxxxxxxxx">
                             @error('phone')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         
                         <div>
                             <label for="city" class="block text-sm font-medium text-gray-700 mb-1">Kota *</label>
                             <input type="text" id="city" name="city" value="{{ old('city') }}" required
-                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('city')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         
                         <div>
                             <label for="province" class="block text-sm font-medium text-gray-700 mb-1">Provinsi *</label>
                             <input type="text" id="province" name="province" value="{{ old('province') }}" required
-                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('province')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         
-                        <div>
+                        <div class="sm:col-span-2">
                             <label for="postal_code" class="block text-sm font-medium text-gray-700 mb-1">Kode Pos *</label>
                             <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code') }}" required
-                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('postal_code')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -146,8 +146,8 @@
             </div>
 
             <!-- Shipping Expedition -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6 animate-slide-up animation-delay-3000">
-                <h2 class="text-xl font-semibold mb-4 text-gray-900">Pilih Ekspedisi Pengiriman</h2>
+            <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-4 sm:mb-6 animate-slide-up animation-delay-3000">
+                <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900">Pilih Ekspedisi Pengiriman</h2>
                 
                 <!-- Info Ongkos Kirim -->
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
@@ -172,13 +172,13 @@
                             <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
                                 <input type="radio" name="shipping_expedition" value="jne_reg" class="text-blue-600 focus:ring-blue-500" data-cost="15000" data-estimation="2-3 hari">
                                 <div class="ml-3 flex-1">
-                                    <div class="flex justify-between items-center">
-                                        <div>
-                                            <div class="font-medium text-gray-900">JNE REG (Regular)</div>
-                                            <div class="text-sm text-gray-600">Estimasi: 2-3 hari kerja</div>
+                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                                        <div class="mb-1 sm:mb-0">
+                                            <div class="font-medium text-gray-900 text-sm sm:text-base">JNE REG (Regular)</div>
+                                            <div class="text-xs sm:text-sm text-gray-600">Estimasi: 2-3 hari kerja</div>
                                         </div>
-                                        <div class="text-right">
-                                            <div class="font-medium text-gray-900">Rp 15.000</div>
+                                        <div class="text-left sm:text-right">
+                                            <div class="font-medium text-gray-900 text-sm sm:text-base">Rp 15.000</div>
                                         </div>
                                     </div>
                                 </div>
@@ -187,13 +187,13 @@
                             <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
                                 <input type="radio" name="shipping_expedition" value="jne_yes" class="text-blue-600 focus:ring-blue-500" data-cost="22000" data-estimation="1-2 hari">
                                 <div class="ml-3 flex-1">
-                                    <div class="flex justify-between items-center">
-                                        <div>
-                                            <div class="font-medium text-gray-900">JNE YES (Yakin Esok Sampai)</div>
-                                            <div class="text-sm text-gray-600">Estimasi: 1-2 hari kerja</div>
+                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                                        <div class="mb-1 sm:mb-0">
+                                            <div class="font-medium text-gray-900 text-sm sm:text-base">JNE YES (Yakin Esok Sampai)</div>
+                                            <div class="text-xs sm:text-sm text-gray-600">Estimasi: 1-2 hari kerja</div>
                                         </div>
-                                        <div class="text-right">
-                                            <div class="font-medium text-gray-900">Rp 22.000</div>
+                                        <div class="text-left sm:text-right">
+                                            <div class="font-medium text-gray-900 text-sm sm:text-base">Rp 22.000</div>
                                         </div>
                                     </div>
                                 </div>
@@ -202,13 +202,13 @@
                             <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
                                 <input type="radio" name="shipping_expedition" value="jnt_reg" class="text-blue-600 focus:ring-blue-500" data-cost="13000" data-estimation="2-4 hari">
                                 <div class="ml-3 flex-1">
-                                    <div class="flex justify-between items-center">
-                                        <div>
-                                            <div class="font-medium text-gray-900">J&T REG (Regular)</div>
-                                            <div class="text-sm text-gray-600">Estimasi: 2-4 hari kerja</div>
+                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                                        <div class="mb-1 sm:mb-0">
+                                            <div class="font-medium text-gray-900 text-sm sm:text-base">J&T REG (Regular)</div>
+                                            <div class="text-xs sm:text-sm text-gray-600">Estimasi: 2-4 hari kerja</div>
                                         </div>
-                                        <div class="text-right">
-                                            <div class="font-medium text-gray-900">Rp 13.000</div>
+                                        <div class="text-left sm:text-right">
+                                            <div class="font-medium text-gray-900 text-sm sm:text-base">Rp 13.000</div>
                                         </div>
                                     </div>
                                 </div>
@@ -217,13 +217,13 @@
                             <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
                                 <input type="radio" name="shipping_expedition" value="sicepat_reg" class="text-blue-600 focus:ring-blue-500" data-cost="12000" data-estimation="2-3 hari">
                                 <div class="ml-3 flex-1">
-                                    <div class="flex justify-between items-center">
-                                        <div>
-                                            <div class="font-medium text-gray-900">SiCepat REG (Regular)</div>
-                                            <div class="text-sm text-gray-600">Estimasi: 2-3 hari kerja</div>
+                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                                        <div class="mb-1 sm:mb-0">
+                                            <div class="font-medium text-gray-900 text-sm sm:text-base">SiCepat REG (Regular)</div>
+                                            <div class="text-xs sm:text-sm text-gray-600">Estimasi: 2-3 hari kerja</div>
                                         </div>
-                                        <div class="text-right">
-                                            <div class="font-medium text-gray-900">Rp 12.000</div>
+                                        <div class="text-left sm:text-right">
+                                            <div class="font-medium text-gray-900 text-sm sm:text-base">Rp 12.000</div>
                                         </div>
                                     </div>
                                 </div>
@@ -268,33 +268,31 @@
         </div>
 
         <!-- Order Summary Sidebar -->
-        <div class="lg:col-span-1">
-            <div class="bg-white rounded-lg shadow-md p-6 sticky top-4 animate-slide-up animation-delay-4000">
-                <h2 class="text-xl font-semibold mb-4 text-gray-900">Total Pembayaran</h2>
+        <div class="lg:col-span-1 order-first lg:order-last">
+            <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 lg:sticky lg:top-4 mb-4 lg:mb-0 animate-slide-up animation-delay-4000">
+                <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900">Total Pembayaran</h2>
                 
-                <div class="space-y-3 mb-6">
-                    <div class="flex justify-between">
+                <div class="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
+                    <div class="flex justify-between text-sm sm:text-base">
                         <span class="text-gray-600">Subtotal</span>
                         <span class="font-medium">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                     </div>
                     
                     @if($discount > 0)
-                    <div class="flex justify-between text-green-600">
+                    <div class="flex justify-between text-green-600 text-sm sm:text-base">
                         <span>Diskon</span>
                         <span>- Rp {{ number_format($discount, 0, ',', '.') }}</span>
                     </div>
                     @endif
                     
-                    <div class="flex justify-between">
+                    <div class="flex justify-between text-sm sm:text-base">
                         <span class="text-gray-600">Ongkos Kirim</span>
                         <span class="font-medium" id="shipping-cost">Rp 0</span>
                     </div>
                     
-
+                    <hr class="my-2 sm:my-3">
                     
-                    <hr class="my-3">
-                    
-                    <div class="flex justify-between text-lg font-bold">
+                    <div class="flex justify-between text-base sm:text-lg font-bold">
                         <span>Total</span>
                         <span id="total-amount">Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
@@ -325,7 +323,7 @@
                 </div>
                 
                 <button type="button" onclick="processCheckout()"
-                        class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                        class="w-full bg-blue-600 text-white py-3 sm:py-4 px-4 rounded-lg font-medium text-sm sm:text-base hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
                         id="checkout-btn">
                     Proses Checkout
                 </button>
