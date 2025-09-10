@@ -5,10 +5,10 @@
 @section('content')
 <div class="space-y-4">
     <!-- Page Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h1 class="text-xl font-bold text-gray-900">Products</h1>
         <div class="flex gap-2">
-            <a href="{{ route('admin.products.create') }}" class="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition">+ Produk</a>
+            <a href="{{ route('admin.products.create') }}" class="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition text-center">+ Produk</a>
         </div>
     </div>
 
@@ -25,24 +25,57 @@
     @endif
 
     <!-- Filter & Search -->
-    <form method="GET" class="flex gap-2 items-center bg-white p-3 rounded shadow">
-        <select name="category" class="border rounded px-2 py-1 text-sm">
-            <option value="">Semua Kategori</option>
-            @foreach($categories as $cat)
-                <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-            @endforeach
-        </select>
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari produk..." class="border rounded px-2 py-1 text-sm" autocomplete="off">
-        <select name="status" class="border rounded px-2 py-1 text-sm">
-            <option value="">Semua Status</option>
-            <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Aktif</option>
-            <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Nonaktif</option>
-        </select>
-        <button type="submit" class="px-3 py-1 bg-gray-700 text-white rounded text-sm hover:bg-gray-800 transition">Filter</button>
+    <form method="GET" class="bg-white p-3 rounded shadow">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            <select name="category" class="border rounded px-2 py-1 text-sm">
+                <option value="">Semua Kategori</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
+            </select>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari produk..." class="border rounded px-2 py-1 text-sm" autocomplete="off">
+            <select name="status" class="border rounded px-2 py-1 text-sm">
+                <option value="">Semua Status</option>
+                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Aktif</option>
+                <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Nonaktif</option>
+            </select>
+            <button type="submit" class="px-3 py-1 bg-gray-700 text-white rounded text-sm hover:bg-gray-800 transition">Filter</button>
+        </div>
     </form>
 
-    <!-- Tabel Produk -->
-    <div class="overflow-x-auto rounded shadow">
+    <!-- Mobile Cards (visible on small screens) -->
+    <div class="block lg:hidden space-y-4">
+        @forelse($products as $product)
+        <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-start mb-2">
+                <h3 class="font-medium text-gray-900">{{ $product->name }}</h3>
+                @if($product->is_active)
+                    <span class="px-2 py-0.5 bg-green-100 text-green-800 rounded text-xs">Aktif</span>
+                @else
+                    <span class="px-2 py-0.5 bg-red-100 text-red-800 rounded text-xs">Nonaktif</span>
+                @endif
+            </div>
+            <div class="text-sm text-gray-600 space-y-1">
+                <p>Kategori: {{ $product->category->name ?? '-' }}</p>
+                <p>Harga: Rp {{ number_format($product->price) }}</p>
+                <p>Stok: {{ $product->stock }}</p>
+            </div>
+            <div class="flex gap-2 mt-3">
+                <a href="{{ route('admin.products.edit', $product) }}" class="flex-1 px-3 py-1 bg-yellow-500 text-white rounded text-xs hover:bg-yellow-600 text-center">Edit</a>
+                <form action="{{ route('admin.products.destroy', $product) }}" method="POST" onsubmit="return confirm('Yakin hapus?')" class="flex-1">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full px-3 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600">Hapus</button>
+                </form>
+            </div>
+        </div>
+        @empty
+        <div class="text-center text-gray-500 py-6">Tidak ada produk ditemukan.</div>
+        @endforelse
+    </div>
+
+    <!-- Desktop Table (hidden on small screens) -->
+    <div class="hidden lg:block overflow-x-auto rounded shadow">
         <table class="min-w-full bg-white">
             <thead class="bg-gray-50">
                 <tr>

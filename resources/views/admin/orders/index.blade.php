@@ -5,10 +5,10 @@
 @section('content')
 <div class="space-y-3">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h1 class="text-lg font-semibold text-gray-900">Orders</h1>
         <a href="{{ route('admin.orders.export', request()->all()) }}" 
-           class="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700">
+           class="px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 text-center">
             Export
         </a>
     </div>
@@ -25,7 +25,7 @@
     @endif
 
     <!-- Stats -->
-    <div class="grid grid-cols-4 gap-2">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
         <div class="bg-white border rounded p-2">
             <div class="text-lg font-bold text-blue-600">{{ $orders->total() }}</div>
             <div class="text-xs text-gray-500">Total</div>
@@ -46,7 +46,7 @@
 
     <!-- Filters -->
     <form method="GET" class="bg-white border rounded p-2">
-        <div class="flex flex-wrap gap-2 items-center">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2">
             <select name="status" class="border rounded px-2 py-1 text-xs">
                 <option value="all">All Status</option>
                 @foreach($orderStatuses as $key => $label)
@@ -66,8 +66,66 @@
         </div>
     </form>
 
-    <!-- Orders Table -->
-    <div class="bg-white border rounded overflow-hidden">
+    <!-- Mobile Cards (visible on small screens) -->
+    <div class="block lg:hidden space-y-3">
+        @forelse($orders as $order)
+        <div class="bg-white border rounded p-3">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <div class="font-medium">#{{ $order->order_number }}</div>
+                    <div class="text-xs text-gray-500">{{ $order->created_at->format('d M Y') }}</div>
+                </div>
+                <div class="text-right">
+                    <div class="font-medium text-sm">Rp {{ number_format($order->total_amount) }}</div>
+                </div>
+            </div>
+            <div class="text-sm mb-2">
+                <div class="font-medium">{{ $order->user->name ?? 'Guest' }}</div>
+                <div class="text-xs text-gray-500">{{ substr($order->user->email ?? json_decode($order->shipping_address)->email, 0, 30) }}</div>
+            </div>
+            <div class="flex flex-wrap gap-2 mb-3">
+                <span class="px-2 py-1 rounded text-xs
+                    @if($order->payment_status == 'paid') bg-green-100 text-green-700
+                    @elseif($order->payment_status == 'pending') bg-yellow-100 text-yellow-700
+                    @else bg-red-100 text-red-700 @endif">
+                    {{ $order->payment_status_label }}
+                </span>
+                <span class="px-2 py-1 rounded text-xs
+                    @if($order->status == 'pending') bg-yellow-100 text-yellow-700
+                    @elseif($order->status == 'processing') bg-blue-100 text-blue-700
+                    @elseif($order->status == 'shipped') bg-purple-100 text-purple-700
+                    @elseif($order->status == 'delivered') bg-green-100 text-green-700
+                    @else bg-red-100 text-red-700 @endif">
+                    {{ $order->status_label }}
+                </span>
+            </div>
+            <div class="flex gap-2">
+                <a href="{{ route('admin.orders.show', $order) }}" 
+                   class="flex-1 bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 text-center">
+                    View
+                </a>
+                @if($order->payment_status === 'pending')
+                <form action="{{ route('admin.orders.confirm-payment', $order) }}" method="POST" class="flex-1">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" 
+                            class="w-full bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700"
+                            onclick="return confirm('Confirm payment?')">
+                        Confirm
+                    </button>
+                </form>
+                @endif
+            </div>
+        </div>
+        @empty
+        <div class="text-center text-gray-500 py-8">
+            No orders found
+        </div>
+        @endforelse
+    </div>
+
+    <!-- Desktop Table (hidden on small screens) -->
+    <div class="hidden lg:block bg-white border rounded overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full text-xs">
                 <thead class="bg-gray-50">

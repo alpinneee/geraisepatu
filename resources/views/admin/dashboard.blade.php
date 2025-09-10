@@ -16,7 +16,7 @@
     </div>
 
     <!-- Quick Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
             <div class="flex items-center">
                 <div class="p-2 rounded-full bg-blue-100 text-blue-600">
@@ -81,7 +81,7 @@
     <!-- Order Status Overview -->
     <div class="bg-white rounded-lg shadow p-4">
         <h2 class="text-md font-semibold text-gray-900 mb-3">Status Pesanan</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <div class="text-center p-3 bg-yellow-50 rounded-lg">
                 <div class="text-xl font-bold text-yellow-600">{{ $pendingOrders }}</div>
                 <div class="text-xs text-gray-600">Pending</div>
@@ -102,7 +102,7 @@
     </div>
 
     <!-- Orders Needing Attention & Recent Orders -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <!-- Orders Needing Attention -->
         <div class="bg-white rounded-lg shadow">
             <div class="p-4 border-b border-gray-200 flex items-center justify-between">
@@ -115,7 +115,7 @@
                 @if($ordersNeedingAttention->count() > 0)
                     <div class="space-y-4">
                         @foreach($ordersNeedingAttention as $order)
-                        <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200 space-y-3 sm:space-y-0">
                             <div class="flex-1">
                                 <div class="flex items-center justify-between">
                                     <p class="font-medium text-gray-900">#{{ $order->order_number }}</p>
@@ -131,9 +131,9 @@
                                 </div>
                                 <p class="text-xs text-green-600 mt-1">Uploaded: {{ $order->payment_proof_uploaded_at->diffForHumans() }}</p>
                             </div>
-                            <div class="ml-4">
+                            <div class="sm:ml-4">
                                 <a href="{{ route('admin.orders.show', $order) }}" 
-                                   class="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700 transition">
+                                   class="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700 transition block text-center sm:inline-block">
                                     Verifikasi
                                 </a>
                             </div>
@@ -160,7 +160,7 @@
                 @if($recentOrders->count() > 0)
                     <div class="space-y-4">
                         @foreach($recentOrders as $order)
-                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg space-y-3 sm:space-y-0">
                             <div class="flex-1">
                                 <div class="flex items-center justify-between">
                                     <p class="font-medium text-gray-900">#{{ $order->order_number }}</p>
@@ -168,7 +168,7 @@
                                 </div>
                                 <p class="text-sm text-gray-600">{{ $order->user->name ?? 'Guest' }}</p>
                                 <p class="text-sm font-medium text-gray-900">Rp {{ number_format($order->total_amount) }}</p>
-                                <div class="flex items-center space-x-2 mt-2">
+                                <div class="flex flex-wrap items-center gap-2 mt-2">
                                     <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
                                         @if($order->status === 'pending') bg-yellow-100 text-yellow-800
                                         @elseif($order->status === 'processing') bg-blue-100 text-blue-800
@@ -186,9 +186,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ml-4">
+                            <div class="sm:ml-4">
                                 <a href="{{ route('admin.orders.show', $order) }}" 
-                                   class="bg-gray-600 text-white px-3 py-1 rounded text-xs hover:bg-gray-700 transition">
+                                   class="bg-gray-600 text-white px-3 py-1 rounded text-xs hover:bg-gray-700 transition block text-center sm:inline-block">
                                     Detail
                                 </a>
                             </div>
@@ -203,7 +203,7 @@
     </div>
 
     <!-- Payment Methods & Top Products -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <!-- Payment Methods Statistics -->
         <div class="bg-white rounded-lg shadow-md">
             <div class="p-6 border-b border-gray-200">
@@ -213,7 +213,7 @@
                 @if($paymentMethodStats->count() > 0)
                     <div class="space-y-4">
                         @foreach($paymentMethodStats as $stat)
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-50 rounded-lg space-y-2 sm:space-y-0">
                             <div>
                                 <p class="font-medium text-gray-900">
                                     @php
@@ -234,7 +234,7 @@
                                 </p>
                                 <p class="text-sm text-gray-600">{{ $stat->count }} transaksi</p>
                             </div>
-                            <div class="text-right">
+                            <div class="text-right sm:text-right">
                                 <p class="font-medium text-gray-900">Rp {{ number_format($stat->total) }}</p>
                             </div>
                         </div>
@@ -255,7 +255,7 @@
                 @if($topProducts->count() > 0)
                     <div class="space-y-4">
                         @foreach($topProducts as $item)
-                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg space-y-3 sm:space-y-0">
                             <div class="flex items-center">
                                 @if($item['product'] && $item['product']->images->count() > 0)
                                     <img src="{{ $item['product']->images->first()->image_url ?? '/images/placeholder.jpg' }}" 
@@ -273,7 +273,7 @@
                                     <p class="text-sm text-gray-600">{{ $item['total_quantity'] }} terjual</p>
                                 </div>
                             </div>
-                            <div class="text-right">
+                            <div class="text-right sm:text-right">
                                 <p class="font-medium text-gray-900">Rp {{ number_format($item['product']->price ?? 0) }}</p>
                             </div>
                         </div>
@@ -292,11 +292,11 @@
             <h3 class="text-lg font-medium text-gray-900">Penjualan 7 Hari Terakhir</h3>
         </div>
         <div class="p-6">
-            <div class="grid grid-cols-7 gap-4">
+            <div class="grid grid-cols-7 gap-2 sm:gap-4">
                 @foreach($salesData as $data)
                 <div class="text-center">
                     <div class="mb-2">
-                        <div class="h-20 bg-gray-100 rounded-lg flex items-end justify-center">
+                        <div class="h-16 sm:h-20 bg-gray-100 rounded-lg flex items-end justify-center">
                             @if($data['total'] > 0)
                                 <div class="bg-blue-500 rounded-t w-full" 
                                      style="height: {{ max(10, ($data['total'] / max(array_column($salesData, 'total'))) * 80) }}%">
@@ -304,9 +304,10 @@
                             @endif
                         </div>
                     </div>
-                    <p class="text-xs font-medium text-gray-900">{{ $data['formatted_date'] }}</p>
-                    <p class="text-xs text-gray-600">{{ $data['count'] }} pesanan</p>
-                    <p class="text-xs text-gray-600">Rp {{ number_format($data['total']) }}</p>
+                    <p class="text-xs font-medium text-gray-900 hidden sm:block">{{ $data['formatted_date'] }}</p>
+                    <p class="text-xs font-medium text-gray-900 sm:hidden">{{ substr($data['formatted_date'], 0, 3) }}</p>
+                    <p class="text-xs text-gray-600 hidden sm:block">{{ $data['count'] }} pesanan</p>
+                    <p class="text-xs text-gray-600 hidden sm:block">Rp {{ number_format($data['total']) }}</p>
                 </div>
                 @endforeach
             </div>

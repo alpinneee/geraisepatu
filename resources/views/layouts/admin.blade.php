@@ -12,25 +12,35 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/admin-responsive.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
+        <!-- Mobile overlay -->
+        <div id="mobile-overlay" class="mobile-overlay fixed inset-0 bg-black bg-opacity-50 z-40 hidden lg:hidden"></div>
+        
         <div class="flex">
             <!-- Sidebar -->
-            <div class="w-60 bg-gray-50 border-r border-gray-200 min-h-screen">
+            <div id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-60 bg-gray-50 border-r border-gray-200 min-h-screen transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
                 <!-- Header -->
                 <div class="p-3 border-b border-gray-200">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-7 h-7 bg-gray-800 rounded-lg flex items-center justify-center">
-                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"></path>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-7 h-7 bg-gray-800 rounded-lg flex items-center justify-center">
+                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h1 class="text-sm font-semibold text-gray-900">AdminPanel</h1>
+                                <p class="text-xs text-gray-500">Dashboard</p>
+                            </div>
+                        </div>
+                        <button id="sidebar-close" class="lg:hidden p-1 rounded-md hover:bg-gray-200">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
-                        </div>
-                        <div>
-                            <h1 class="text-sm font-semibold text-gray-900">AdminPanel</h1>
-                            <p class="text-xs text-gray-500">Dashboard</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
 
@@ -169,14 +179,17 @@
             </div>
 
             <!-- Main Content -->
-            <div class="flex-1">
+            <div class="flex-1 lg:ml-0">
                 <!-- Top Navigation -->
                 <div class="bg-white shadow p-4 flex justify-between items-center">
-                    <button id="sidebar-toggle" class="md:hidden">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
+                    <div class="flex items-center space-x-4">
+                        <button id="sidebar-toggle" class="lg:hidden p-2 rounded-md hover:bg-gray-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                        <h1 class="text-lg font-semibold text-gray-900 lg:hidden">Admin Panel</h1>
+                    </div>
                     
                     <div class="flex items-center space-x-4">
                         <div class="relative">
@@ -211,7 +224,7 @@
                 </div>
 
                 <!-- Content -->
-                <div class="p-6">
+                <div class="p-4 lg:p-6">
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
                             <p>{{ session('success') }}</p>
@@ -245,6 +258,57 @@
                 arrow.style.transform = 'rotate(0deg)';
             }
         }
+
+        // Mobile sidebar toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+            
+            function closeSidebar() {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+            
+            sidebarToggle.addEventListener('click', function() {
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    openSidebar();
+                } else {
+                    closeSidebar();
+                }
+            });
+            
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', closeSidebar);
+            }
+            
+            overlay.addEventListener('click', closeSidebar);
+            
+            // Close sidebar when clicking on links (mobile only)
+            const sidebarLinks = sidebar.querySelectorAll('a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 1024) {
+                        closeSidebar();
+                    }
+                });
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 1024) {
+                    closeSidebar();
+                }
+            });
+        });
     </script>
 </body>
 </html> 
