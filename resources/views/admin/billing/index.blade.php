@@ -5,39 +5,39 @@
 @section('content')
 <div class="space-y-6">
     <!-- Page Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Billing & Revenue</h1>
-            <p class="text-gray-600">Financial overview and payment analytics</p>
+            <h1 class="text-xl md:text-2xl font-bold text-gray-900">Billing & Revenue</h1>
+            <p class="text-sm md:text-base text-gray-600">Financial overview and payment analytics</p>
         </div>
     </div>
 
     <!-- Revenue Statistics -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div class="bg-white rounded-lg shadow p-4 md:p-6 border-l-4 border-green-500">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-green-100 text-green-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-2 md:p-3 rounded-full bg-green-100 text-green-600">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                     </svg>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Total Revenue</p>
-                    <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($totalRevenue) }}</p>
+                <div class="ml-3 md:ml-4">
+                    <p class="text-xs md:text-sm font-medium text-gray-600">Total Revenue</p>
+                    <p class="text-lg md:text-2xl font-bold text-gray-900">Rp {{ number_format($totalRevenue) }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
+        <div class="bg-white rounded-lg shadow p-4 md:p-6 border-l-4 border-blue-500">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-2 md:p-3 rounded-full bg-blue-100 text-blue-600">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">This Month</p>
-                    <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($currentMonthRevenue) }}</p>
+                <div class="ml-3 md:ml-4">
+                    <p class="text-xs md:text-sm font-medium text-gray-600">This Month</p>
+                    <p class="text-lg md:text-2xl font-bold text-gray-900">Rp {{ number_format($currentMonthRevenue) }}</p>
                     @php
                         $growth = $lastMonthRevenue > 0 ? (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100 : 0;
                     @endphp
@@ -48,30 +48,30 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-500">
+        <div class="bg-white rounded-lg shadow p-4 md:p-6 border-l-4 border-yellow-500">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-2 md:p-3 rounded-full bg-yellow-100 text-yellow-600">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Pending Payments</p>
-                    <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($pendingPayments) }}</p>
+                <div class="ml-3 md:ml-4">
+                    <p class="text-xs md:text-sm font-medium text-gray-600">Pending Payments</p>
+                    <p class="text-lg md:text-2xl font-bold text-gray-900">Rp {{ number_format($pendingPayments) }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
+        <div class="bg-white rounded-lg shadow p-4 md:p-6 border-l-4 border-red-500">
             <div class="flex items-center">
-                <div class="p-3 rounded-full bg-red-100 text-red-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-2 md:p-3 rounded-full bg-red-100 text-red-600">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                     </svg>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Platform Fees</p>
-                    <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($platformFees) }}</p>
+                <div class="ml-3 md:ml-4">
+                    <p class="text-xs md:text-sm font-medium text-gray-600">Platform Fees</p>
+                    <p class="text-lg md:text-2xl font-bold text-gray-900">Rp {{ number_format($platformFees) }}</p>
                     <p class="text-xs text-gray-500">2.5% of total revenue</p>
                 </div>
             </div>
@@ -79,28 +79,28 @@
     </div>
 
     <!-- Charts Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         <!-- Monthly Revenue Chart -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-lg font-semibold mb-4">Monthly Revenue (6 Months)</h2>
-            <div class="flex items-end gap-2 h-40">
+        <div class="bg-white rounded-lg shadow p-4 md:p-6">
+            <h2 class="text-base md:text-lg font-semibold mb-4">Monthly Revenue (6 Months)</h2>
+            <div class="flex items-end gap-1 md:gap-2 h-32 md:h-40">
                 @foreach($monthlyRevenue as $data)
                     <div class="flex flex-col items-center justify-end h-full flex-1">
                         <div class="bg-green-500 w-full rounded-t flex items-end justify-center text-white text-xs font-bold" 
                              style="height: {{ max(10, $data['revenue'] > 0 ? ($data['revenue'] / max(1, $monthlyRevenue->max('revenue'))) * 80 : 0) }}%">
                             @if($data['revenue'] > 0)
-                                <span class="block w-full text-center py-1">{{ number_format($data['revenue']/1000000, 1) }}M</span>
+                                <span class="block w-full text-center py-1 text-[10px] md:text-xs">{{ number_format($data['revenue']/1000000, 1) }}M</span>
                             @endif
                         </div>
-                        <span class="text-xs mt-1">{{ $data['month'] }}</span>
+                        <span class="text-[10px] md:text-xs mt-1">{{ $data['month'] }}</span>
                     </div>
                 @endforeach
             </div>
         </div>
 
         <!-- Payment Methods -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-lg font-semibold mb-4">Payment Methods</h2>
+        <div class="bg-white rounded-lg shadow p-4 md:p-6">
+            <h2 class="text-base md:text-lg font-semibold mb-4">Payment Methods</h2>
             <div class="space-y-3">
                 @foreach($paymentMethods as $method)
                     @php
@@ -119,13 +119,13 @@
                         ];
                     @endphp
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-4 h-4 bg-blue-500 rounded"></div>
-                            <span class="text-sm font-medium">{{ $labels[$method->payment_method] ?? ucfirst($method->payment_method) }}</span>
+                        <div class="flex items-center space-x-2 md:space-x-3">
+                            <div class="w-3 h-3 md:w-4 md:h-4 bg-blue-500 rounded"></div>
+                            <span class="text-xs md:text-sm font-medium">{{ $labels[$method->payment_method] ?? ucfirst($method->payment_method) }}</span>
                         </div>
                         <div class="text-right">
-                            <div class="text-sm font-medium">Rp {{ number_format($method->total) }}</div>
-                            <div class="text-xs text-gray-500">{{ number_format($percentage, 1) }}% ({{ $method->count }} orders)</div>
+                            <div class="text-xs md:text-sm font-medium">Rp {{ number_format($method->total) }}</div>
+                            <div class="text-[10px] md:text-xs text-gray-500">{{ number_format($percentage, 1) }}% ({{ $method->count }} orders)</div>
                         </div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2">
@@ -138,10 +138,12 @@
 
     <!-- Recent Transactions -->
     <div class="bg-white rounded-lg shadow">
-        <div class="p-6 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900">Recent Transactions</h3>
+        <div class="p-4 md:p-6 border-b border-gray-200">
+            <h3 class="text-base md:text-lg font-medium text-gray-900">Recent Transactions</h3>
         </div>
-        <div class="overflow-x-auto">
+        
+        <!-- Desktop Table -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -200,6 +202,58 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        
+        <!-- Mobile Cards -->
+        <div class="md:hidden p-4 space-y-4">
+            @forelse($recentTransactions as $transaction)
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h4 class="font-medium text-gray-900">#{{ $transaction->order_number }}</h4>
+                            <p class="text-sm text-gray-500">{{ $transaction->user->name ?? 'Guest' }}</p>
+                        </div>
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                            Paid
+                        </span>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500">Payment:</span>
+                            <span class="text-sm text-gray-900">
+                                @php
+                                    $labels = [
+                                        'qris' => 'QRIS',
+                                        'gopay' => 'GoPay', 
+                                        'ovo' => 'OVO',
+                                        'dana' => 'DANA',
+                                        'shopeepay' => 'ShopeePay',
+                                        'bca' => 'Bank BCA',
+                                        'mandiri' => 'Bank Mandiri',
+                                        'bri' => 'Bank BRI',
+                                        'bni' => 'Bank BNI',
+                                        'cod' => 'Cash on Delivery'
+                                    ];
+                                @endphp
+                                {{ $labels[$transaction->payment_method] ?? ucfirst($transaction->payment_method) }}
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500">Amount:</span>
+                            <span class="text-sm font-medium text-gray-900">Rp {{ number_format($transaction->total_amount) }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500">Date:</span>
+                            <span class="text-sm text-gray-900">{{ $transaction->updated_at->format('M d, Y H:i') }}</span>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="text-center py-8">
+                    <p class="text-gray-500">No transactions found</p>
+                </div>
+            @endforelse
         </div>
     </div>
 </div>
