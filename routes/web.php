@@ -66,7 +66,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Midtrans Routes (no auth required for webhooks)
-Route::post('/midtrans/notification', [\App\Http\Controllers\MidtransController::class, 'notification'])->name('midtrans.notification');
+Route::post('/midtrans/notification', [\App\Http\Controllers\MidtransController::class, 'notification'])
+    ->middleware('midtrans.webhook')
+    ->name('midtrans.notification');
 Route::get('/midtrans/finish', [\App\Http\Controllers\MidtransController::class, 'finish'])->name('midtrans.finish');
 Route::get('/midtrans/unfinish', [\App\Http\Controllers\MidtransController::class, 'unfinish'])->name('midtrans.unfinish');
 Route::get('/midtrans/error', [\App\Http\Controllers\MidtransController::class, 'error'])->name('midtrans.error');

@@ -8,6 +8,9 @@ use Midtrans\Transaction;
 use Midtrans\Notification;
 use App\Models\Order;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PaymentSuccessMail;
+use App\Mail\PaymentFailedMail;
 
 class MidtransService
 {
@@ -85,12 +88,22 @@ class MidtransService
             $transactionStatus = $notification->transaction_status;
             $fraudStatus = $notification->fraud_status;
             $orderId = $notification->order_id;
+            $signatureKey = $notification->signature_key;
+            
+            // Verify signature for security
+            if (!$this->verifySignature($notification)) {
+                Log::error('Invalid signature for Midtrans notification: ' . $orderId);
+                return false;
+            }
+            
+            // Extract original order number (remove timestamp suffix if exists)
+            $originalOrderNumber = $this->extractOrderNumber($orderId);
             
             // Find order by order number
-            $order = Order::where('order_number', $orderId)->first();
+            $order = Order::where('order_number', $originalOrderNumber)->first();
             
             if (!$order) {
-                Log::error('Order not found for Midtrans notification: ' . $orderId);
+                Log::error('Order not found for Midtrans notification: ' . $orderId . ' (original: ' . $originalOrderNumber . ')');
                 return false;
             }
 
@@ -175,7 +188,38 @@ class MidtransService
             $order->update(['status' => 'processing']);
         }
         
+        // Send email notifications
+        $this->sendPaymentStatusEmail($order, $paymentStatus);
+        
         Log::info("Order {$order->order_number} payment status updated to: {$paymentStatus}");
+    }
+    
+    /**
+     * Verify Midtrans signature for security
+     */
+    private function verifySignature($notification)
+    {
+        $orderId = $notification->order_id;
+        $statusCode = $notification->status_code;
+        $grossAmount = $notification->gross_amount;
+        $serverKey = config('midtrans.server_key');
+        
+        $mySignatureKey = hash('sha512', $orderId . $statusCode . $grossAmount . $serverKey);
+        
+        return $mySignatureKey === $notification->signature_key;
+    }
+    
+    /**
+     * Extract original order number from Midtrans order ID
+     */
+    private function extractOrderNumber($orderId)
+    {
+        // Remove timestamp suffix if exists (format: ORDER-123-1234567890)
+        if (preg_match('/^(.+)-\d{10}$/', $orderId, $matches)) {
+            return $matches[1];
+        }
+        
+        return $orderId;
     }
 
     /**
@@ -218,6 +262,39 @@ class MidtransService
         } catch (\Exception $e) {
             Log::error('Failed to cancel Midtrans transaction: ' . $e->getMessage());
             return null;
+        }
+    }
+    
+    /**
+     * Send email notification based on payment status
+     */
+    private function sendPaymentStatusEmail(Order $order, string $paymentStatus)
+    {
+        try {
+            $email = $order->user->email ?? json_decode($order->shipping_address)->email ?? null;
+            
+            if (!$email) {
+                Log::warning("No email found for order {$order->order_number}");
+                return;
+            }
+            
+            switch ($paymentStatus) {
+                case 'paid':
+                    Mail::to($email)->send(new PaymentSuccessMail($order));
+                    Log::info("Payment success email sent for order: {$order->order_number}");
+                    break;
+                    
+                case 'failed':
+                    Mail::to($email)->send(new PaymentFailedMail($order));
+                    Log::info("Payment failed email sent for order: {$order->order_number}");
+                    break;
+                    
+                default:
+                    Log::info("No email template for payment status: {$paymentStatus}");
+                    break;
+            }
+        } catch (\Exception $e) {
+            Log::error("Failed to send payment status email: " . $e->getMessage());
         }
     }
 } 

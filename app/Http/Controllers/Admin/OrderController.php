@@ -178,22 +178,42 @@ class OrderController extends Controller
             $oldStatus = $order->status;
             $oldPaymentStatus = $order->payment_status;
             
-            // Update order
-            $order->update([
+            // Check if payment was validated by Midtrans
+            $isMidtransValidated = $this->isMidtransValidatedPayment($order);
+            
+            // Prevent manual payment status changes for Midtrans-validated payments
+            if ($isMidtransValidated && $oldPaymentStatus !== $request->payment_status) {
+                return redirect()->route('admin.orders.show', $order)
+                    ->with('error', 'Status pembayaran tidak dapat diubah secara manual karena sudah divalidasi otomatis oleh Midtrans.');
+            }
+            
+            // Update order (exclude payment_status if Midtrans validated)
+            $updateData = [
                 'status' => $request->status,
-                'payment_status' => $request->payment_status,
                 'notes' => $request->notes,
-            ]);
+            ];
+            
+            // Only allow payment status change if not Midtrans validated
+            if (!$isMidtransValidated) {
+                $updateData['payment_status'] = $request->payment_status;
+            }
+            
+            $order->update($updateData);
             
             // Send email notification if status changed
-            if ($oldStatus !== $request->status || $oldPaymentStatus !== $request->payment_status) {
+            if ($oldStatus !== $request->status || (!$isMidtransValidated && $oldPaymentStatus !== $request->payment_status)) {
                 $this->sendStatusUpdateEmail($order, $oldStatus, $oldPaymentStatus);
             }
             
             DB::commit();
             
+            $message = 'Status pesanan berhasil diperbarui dan notifikasi telah dikirim ke pelanggan.';
+            if ($isMidtransValidated && $oldPaymentStatus !== $request->payment_status) {
+                $message .= ' Status pembayaran tetap menggunakan validasi Midtrans.';
+            }
+            
             return redirect()->route('admin.orders.show', $order)
-                ->with('success', 'Status pesanan berhasil diperbarui dan notifikasi telah dikirim ke pelanggan.');
+                ->with('success', $message);
                 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -346,5 +366,25 @@ class OrderController extends Controller
         ];
         
         return $stats;
+    }
+    
+    /**
+     * Check if payment was validated by Midtrans
+     */
+    private function isMidtransValidatedPayment(Order $order)
+    {
+        // Check if order has Midtrans payment details
+        if (!$order->payment_details) {
+            return false;
+        }
+        
+        $paymentDetails = is_string($order->payment_details) 
+            ? json_decode($order->payment_details, true) 
+            : $order->payment_details;
+        
+        // Check if payment details contain Midtrans transaction data
+        return isset($paymentDetails['transaction_id']) || 
+               isset($paymentDetails['payment_type']) || 
+               isset($paymentDetails['transaction_status']);
     }
 }

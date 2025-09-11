@@ -75,14 +75,24 @@
                         </div>
                         <div>
                             <label class="text-sm font-medium text-gray-700">Status Pembayaran</label>
-                            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
-                                @if($order->payment_status == 'paid') bg-green-100 text-green-800
-                                @elseif($order->payment_status == 'pending') bg-yellow-100 text-yellow-800
-                                @elseif($order->payment_status == 'failed') bg-red-100 text-red-800
-                                @elseif($order->payment_status == 'refunded') bg-blue-100 text-blue-800
-                                @endif">
-                                {{ $order->payment_status_label }}
-                            </span>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+                                    @if($order->payment_status == 'paid') bg-green-100 text-green-800
+                                    @elseif($order->payment_status == 'pending') bg-yellow-100 text-yellow-800
+                                    @elseif($order->payment_status == 'failed') bg-red-100 text-red-800
+                                    @elseif($order->payment_status == 'refunded') bg-blue-100 text-blue-800
+                                    @endif">
+                                    {{ $order->payment_status_label }}
+                                </span>
+                                @if($order->payment_details && (isset($order->payment_details['transaction_id']) || isset($order->payment_details['payment_type'])))
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800" title="Divalidasi otomatis oleh Midtrans">
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Midtrans
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     
@@ -316,12 +326,25 @@
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Pembayaran</label>
-                            <select name="payment_status" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                <option value="pending" {{ $order->payment_status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="paid" {{ $order->payment_status === 'paid' ? 'selected' : '' }}>Paid</option>
-                                <option value="failed" {{ $order->payment_status === 'failed' ? 'selected' : '' }}>Failed</option>
-                                <option value="refunded" {{ $order->payment_status === 'refunded' ? 'selected' : '' }}>Refunded</option>
-                            </select>
+                            @if($order->payment_details && (isset($order->payment_details['transaction_id']) || isset($order->payment_details['payment_type'])))
+                                <div class="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-100 text-gray-600">
+                                    {{ $order->payment_status_label }} (Divalidasi Midtrans)
+                                </div>
+                                <input type="hidden" name="payment_status" value="{{ $order->payment_status }}">
+                                <p class="text-xs text-blue-600 mt-1">
+                                    <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Status pembayaran tidak dapat diubah karena sudah divalidasi otomatis oleh Midtrans
+                                </p>
+                            @else
+                                <select name="payment_status" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    <option value="pending" {{ $order->payment_status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="paid" {{ $order->payment_status === 'paid' ? 'selected' : '' }}>Paid</option>
+                                    <option value="failed" {{ $order->payment_status === 'failed' ? 'selected' : '' }}>Failed</option>
+                                    <option value="refunded" {{ $order->payment_status === 'refunded' ? 'selected' : '' }}>Refunded</option>
+                                </select>
+                            @endif
                         </div>
                         
                         <div>
