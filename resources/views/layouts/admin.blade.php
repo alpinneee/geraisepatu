@@ -63,7 +63,7 @@
                                     </svg>
                                     Users
                                 </div>
-                                <span class="bg-gray-200 text-gray-700 text-xs font-medium px-1.5 py-0.5 rounded-full">124</span>
+                                <span class="bg-gray-200 text-gray-700 text-xs font-medium px-1.5 py-0.5 rounded-full">{{ \App\Models\User::count() }}</span>
                             </a>
                             
                             <div class="relative">
@@ -93,7 +93,7 @@
                                     </svg>
                                     Orders
                                 </div>
-                                <span class="bg-gray-200 text-gray-700 text-xs font-medium px-1.5 py-0.5 rounded-full">12</span>
+                                <span class="bg-gray-200 text-gray-700 text-xs font-medium px-1.5 py-0.5 rounded-full">{{ \App\Models\Order::where('status', 'pending')->count() }}</span>
                             </a>
                             
                             <a href="{{ route('admin.banners.index') }}" class="flex items-center px-2 py-1.5 text-sm font-medium rounded-md {{ request()->routeIs('admin.banners.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100' }}">
@@ -135,7 +135,10 @@
                                     </svg>
                                     Notifications
                                 </div>
-                                <span class="bg-red-100 text-red-700 text-xs font-medium px-1.5 py-0.5 rounded-full">3</span>
+                                @php $pendingNotifications = \App\Models\Order::where('status', 'pending')->count() + \App\Models\Order::where('payment_status', 'pending')->count(); @endphp
+                                @if($pendingNotifications > 0)
+                                <span class="bg-red-100 text-red-700 text-xs font-medium px-1.5 py-0.5 rounded-full">{{ $pendingNotifications }}</span>
+                                @endif
                             </a>
                         </nav>
                     </div>
@@ -197,14 +200,17 @@
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                                 </svg>
-                                <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">3</span>
+                                @php $topNotifications = \App\Models\Order::where('status', 'pending')->count() + \App\Models\Order::where('payment_status', 'pending')->count(); @endphp
+                                @if($topNotifications > 0)
+                                <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">{{ $topNotifications }}</span>
+                                @endif
                             </button>
                         </div>
                         
                         <div class="relative">
                             <button onclick="toggleDropdown('profile')" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none">
-                                <img src="https://ui-avatars.com/api/?name=alfin&background=6366f1&color=fff" alt="alfin" class="w-8 h-8 rounded-full">
-                                <span class="text-sm font-medium">alfin</span>
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=6366f1&color=fff" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full">
+                                <span class="text-sm font-medium">{{ auth()->user()->name }}</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>

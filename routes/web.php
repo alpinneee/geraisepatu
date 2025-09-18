@@ -151,24 +151,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::patch('/orders/{order}/confirm-payment', [\App\Http\Controllers\Admin\OrderController::class, 'confirmPayment'])->name('orders.confirm-payment');
     Route::patch('/orders/{order}/update-status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.update-status');
     
-    // Admin User Routes (placeholder)
-    Route::get('/users', function () {
-        $query = \App\Models\User::query();
-        if (request('role')) {
-            $query->whereHas('roles', function($q) {
-                $q->where('name', request('role'));
-            });
-        }
-        if (request('search')) {
-            $search = request('search');
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        }
-        $users = $query->orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.users.index', compact('users'));
-    })->name('users.index');
+    // Admin User Routes
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['create', 'store', 'show']);
     
     // Admin Reports Routes (placeholder)
     Route::get('/reports', function () {

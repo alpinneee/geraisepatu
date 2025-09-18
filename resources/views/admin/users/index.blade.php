@@ -64,10 +64,16 @@
                     <td class="px-4 py-2 border-b align-middle">{{ $user->created_at->format('d M Y') }}</td>
                     <td class="px-4 py-2 border-b align-middle text-center">
                         <div class="flex justify-center gap-2">
-                            <a href="#" class="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition text-xs font-semibold opacity-50 cursor-not-allowed">Edit</a>
-                            <form action="#" method="POST" onsubmit="return false;">
-                                <button type="button" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition text-xs font-semibold opacity-50 cursor-not-allowed">Hapus</button>
+                            <a href="{{ route('admin.users.edit', $user) }}" class="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition text-xs font-semibold">Edit</a>
+                            @if($user->id !== auth()->id())
+                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus user ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition text-xs font-semibold">Hapus</button>
                             </form>
+                            @else
+                            <button type="button" class="px-3 py-1 bg-gray-400 text-white rounded cursor-not-allowed text-xs font-semibold" disabled>Hapus</button>
+                            @endif
                         </div>
                     </td>
                 </tr>
@@ -108,10 +114,16 @@
             </div>
             
             <div class="flex gap-2">
-                <a href="#" class="flex-1 px-3 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition text-xs font-semibold text-center opacity-50 cursor-not-allowed">Edit</a>
-                <form action="#" method="POST" onsubmit="return false;" class="flex-1">
-                    <button type="button" class="w-full px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition text-xs font-semibold opacity-50 cursor-not-allowed">Hapus</button>
+                <a href="{{ route('admin.users.edit', $user) }}" class="flex-1 px-3 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition text-xs font-semibold text-center">Edit</a>
+                @if($user->id !== auth()->id())
+                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus user ini?');" class="flex-1">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition text-xs font-semibold">Hapus</button>
                 </form>
+                @else
+                <button type="button" class="flex-1 px-3 py-2 bg-gray-400 text-white rounded cursor-not-allowed text-xs font-semibold" disabled>Hapus</button>
+                @endif
             </div>
         </div>
         @empty
