@@ -85,4 +85,36 @@ class HomeController extends Controller
     {
         return view('customer.faq');
     }
+    
+    /**
+     * Display the shipping page.
+     */
+    public function shipping()
+    {
+        return view('customer.shipping');
+    }
+    
+    /**
+     * Display the returns page.
+     */
+    public function returns()
+    {
+        return view('customer.returns');
+    }
+    
+    /**
+     * Display the warranty page.
+     */
+    public function warranty()
+    {
+        return view('customer.warranty');
+    }
+    
+    /**
+     * Display the privacy policy page.
+     */
+    public function privacy()
+    {
+        return view('customer.privacy');
+    }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.customer')
+@extends('layouts.app')
 
 @section('title', $product->name)
 
@@ -197,9 +197,12 @@
                             </div>
                         </div>
                         
-                        <button type="submit" class="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-8 py-3 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            Tambahkan ke Keranjang
-                        </button>
+                        <div class="flex space-x-3">
+                            <button type="submit" class="flex-1 flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-8 py-3 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                Tambahkan ke Keranjang
+                            </button>
+                            <x-wishlist-button :product-id="$product->id" size="lg" />
+                        </div>
                     </form>
                 @else
                     <div class="mt-8">

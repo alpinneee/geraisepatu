@@ -34,10 +34,10 @@
             <div>
                 <h3 class="text-lg font-semibold mb-4 text-white">Layanan</h3>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Pengiriman</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Pengembalian</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Garansi</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Kebijakan Privasi</a></li>
+                    <li><a href="{{ route('shipping') }}" class="text-gray-400 hover:text-white transition-colors duration-300">Pengiriman</a></li>
+                    <li><a href="{{ route('returns') }}" class="text-gray-400 hover:text-white transition-colors duration-300">Pengembalian</a></li>
+                    <li><a href="{{ route('warranty') }}" class="text-gray-400 hover:text-white transition-colors duration-300">Garansi</a></li>
+                    <li><a href="{{ route('privacy') }}" class="text-gray-400 hover:text-white transition-colors duration-300">Kebijakan Privasi</a></li>
                 </ul>
             </div>
 

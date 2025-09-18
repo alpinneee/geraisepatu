@@ -1,4 +1,4 @@
-@extends('layouts.customer')
+@extends('layouts.app')
 
 @section('title', 'Produk')
 
@@ -149,7 +149,7 @@
                     <div class="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-3 xl:gap-x-6">
                         @foreach($products as $product)
                             <div class="group relative border border-gray-200 rounded-lg p-2 sm:p-3 bg-white hover:shadow-md transition">
-                                <div class="aspect-square w-full overflow-hidden rounded bg-gray-100 group-hover:opacity-80 flex items-center justify-center">
+                                <div class="aspect-square w-full overflow-hidden rounded bg-gray-100 group-hover:opacity-80 flex items-center justify-center relative">
                                     @php
                                         $primaryImage = $product->images->where('is_primary', true)->first();
                                     @endphp
@@ -164,8 +164,14 @@
                                             </svg>
                                         </div>
                                     @endif
+                                    
+                                    <!-- Wishlist Button -->
+                                    <div class="absolute top-2 left-2 z-10">
+                                        <x-wishlist-button :product-id="$product->id" size="sm" />
+                                    </div>
+                                    
                                     @if($product->discount_price)
-                                        <div class="absolute top-1 right-1 bg-gray-900 text-white px-2 py-0.5 text-[10px] font-bold rounded">
+                                        <div class="absolute top-2 right-2 bg-gray-900 text-white px-2 py-0.5 text-[10px] font-bold rounded">
                                             -{{ round((($product->price - $product->discount_price) / $product->price) * 100) }}%
                                         </div>
                                     @endif
