@@ -5,6 +5,9 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     
+    # Serve logo directly
+    RewriteRule ^logo\.png$ public/logo.png [L]
+    
     # Serve storage files directly
     RewriteCond %{REQUEST_URI} ^/storage/
     RewriteRule ^storage/(.*)$ public/storage/$1 [L]
