@@ -1,31 +1,26 @@
 @extends('layouts.customer')
 
-@section('title', 'Checkout Berhasil')
+@section('title', 'Pembayaran Berhasil')
 
 @section('content')
-<div class="max-w-5xl mx-auto py-4 sm:py-8 px-4">
-    <div class="bg-white rounded-lg shadow-lg p-4 sm:p-8 animate-fade-in">
+<div class="max-w-4xl mx-auto py-8 px-4">
+    <div class="bg-white rounded-lg shadow-md p-6">
         <!-- Success Header -->
-        <div class="text-center mb-6 sm:mb-8">
-            <div class="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 animate-bounce">
-                <svg class="w-8 h-8 sm:w-10 sm:h-10 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+        <div class="text-center mb-8">
+            <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">🎉 Pesanan Berhasil!</h1>
-            <p class="text-gray-600 text-sm sm:text-base">Terima kasih telah berbelanja di Gerai Sepatu</p>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Pembayaran Berhasil!</h1>
+            <p class="text-gray-600">Terima kasih telah berbelanja di Gerai Sepatu</p>
         </div>
 
         <!-- Order Details -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <!-- Order Information -->
-            <div class="animate-slide-up animation-delay-2000">
-                <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                    Informasi Pesanan
-                </h2>
+            <div>
+                <h2 class="text-xl font-semibold mb-4 text-gray-900">Informasi Pesanan</h2>
                 <div class="space-y-3">
                     <div class="flex justify-between">
                         <span class="text-gray-600">Nomor Pesanan</span>
@@ -65,14 +60,8 @@
             </div>
 
             <!-- Shipping Address -->
-            <div class="animate-slide-up animation-delay-4000">
-                <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    Alamat Pengiriman
-                </h2>
+            <div>
+                <h2 class="text-xl font-semibold mb-4 text-gray-900">Alamat Pengiriman</h2>
                 @php
                     $shippingAddress = json_decode($order->shipping_address, true);
                 @endphp
@@ -97,13 +86,8 @@
         </div>
 
         <!-- Order Items -->
-        <div class="mb-6 sm:mb-8 animate-slide-up animation-delay-4000">
-            <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 flex items-center">
-                <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                </svg>
-                Detail Pesanan
-            </h2>
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900">Detail Pesanan</h2>
             <div class="space-y-4">
                 @foreach($order->items as $item)
                 <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
@@ -245,41 +229,27 @@
        
 
         <!-- Action Buttons -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 sm:mt-8 animate-slide-up animation-delay-4000">
-            @if($order->payment_method !== 'cod')
+        <div class="flex flex-col sm:flex-row gap-4 mt-8">
             <a href="{{ route('profile.orders.show', $order) }}" 
-               class="bg-green-600 text-white py-3 px-4 rounded-lg font-medium text-center hover:bg-green-700 transition duration-200 flex items-center justify-center text-sm sm:text-base">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
+               class="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-medium text-center hover:bg-green-700 transition duration-200">
                 Lihat Detail Pesanan
             </a>
-            @endif
             
             @if($order->payment_method === 'midtrans' && isset($transactionDetails))
             <button onclick="window.print()" 
-                    class="bg-purple-600 text-white py-3 px-4 rounded-lg font-medium text-center hover:bg-purple-700 transition duration-200 flex items-center justify-center text-sm sm:text-base">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-                </svg>
+                    class="flex-1 bg-purple-600 text-white py-3 px-6 rounded-lg font-medium text-center hover:bg-purple-700 transition duration-200">
                 Print Invoice
             </button>
             @endif
             
             <a href="{{ route('home') }}" 
-               class="bg-blue-600 text-white py-3 px-4 rounded-lg font-medium text-center hover:bg-blue-700 transition duration-200 flex items-center justify-center text-sm sm:text-base">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                </svg>
+               class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium text-center hover:bg-blue-700 transition duration-200">
                 Lanjutkan Belanja
             </a>
             
             @auth
             <a href="{{ route('profile.orders') }}" 
-               class="bg-gray-600 text-white py-3 px-4 rounded-lg font-medium text-center hover:bg-gray-700 transition duration-200 flex items-center justify-center text-sm sm:text-base">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                </svg>
+               class="flex-1 bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium text-center hover:bg-gray-200 transition duration-200">
                 Lihat Pesanan Saya
             </a>
             @endif
