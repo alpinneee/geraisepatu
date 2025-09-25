@@ -58,7 +58,7 @@
                                 data-city="{{ $address->city }}"
                                 data-province="{{ $address->province }}"
                                 data-postal-code="{{ $address->postal_code }}">
-                            {{ $address->name }} - {{ Str::limit($address->full_address, 40) }}
+                            {{ $address->name }} - {{ substr($address->full_address, 0, 40) }}{{ strlen($address->full_address) > 40 ? '...' : '' }}
                         </option>
                         @endforeach
                     </select>
