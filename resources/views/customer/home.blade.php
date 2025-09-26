@@ -6,45 +6,41 @@
 
 @section('content')
 <div class="bg-white">
-    <!-- Hero Carousel Section -->
+    <!-- Hero Banner Section -->
     @if($banners->isNotEmpty())
-    <div class="relative overflow-hidden">
+    <div class="relative overflow-hidden pt-10">
         <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
             @foreach($banners as $banner)
-            <div class="w-full flex-shrink-0 relative">
-                <div class="mx-auto max-w-7xl">
-                    <div class="relative z-10 pt-4 lg:pt-8 lg:w-full lg:max-w-2xl">
-                        <div class="relative px-4 py-8 sm:py-16 lg:px-6 lg:py-32 lg:pr-0">
-                            <div class="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
-                                <h1 class="text-xl sm:text-3xl font-bold tracking-tight text-gray-900 lg:text-5xl">
-                                    {{ $banner->title }}
-                                </h1>
-                                <p class="mt-2 sm:mt-4 text-sm sm:text-base leading-6 sm:leading-7 text-gray-600">
-                                    {{ $banner->description }}
-                                </p>
-                                @if($banner->button_text && $banner->button_url)
-                                <div class="mt-4 sm:mt-6 flex items-center gap-x-3">
-                                    <a href="{{ $banner->button_url }}" class="rounded bg-{{ $banner->button_color }}-600 px-4 py-2 text-sm font-semibold text-white hover:bg-{{ $banner->button_color }}-700 transition">
-                                        {{ $banner->button_text }}
-                                    </a>
-                                </div>
-                                @endif
-                            </div>
+            <div class="w-full flex-shrink-0 relative h-80 sm:h-96 md:h-[28rem] lg:h-[32rem]">
+                <img class="w-full h-full object-cover" 
+                     src="{{ asset('storage/' . $banner->image) }}" 
+                     alt="{{ $banner->title }}">
+                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute inset-0 flex items-center">
+                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+                        <div class="max-w-md">
+                            <h2 class="text-xs lg:text-sm font-bold text-white mb-1">
+                                {{ $banner->title }}
+                            </h2>
+                            <p class="text-[10px] lg:text-xs text-white/90 mb-2">
+                                {{ substr($banner->description, 0, 60) }}{{ strlen($banner->description) > 60 ? '...' : '' }}
+                            </p>
+                            @if($banner->button_text && $banner->button_url)
+                            <a href="{{ $banner->button_url }}" class="inline-block px-2 py-1 bg-white text-gray-900 text-[10px] lg:text-xs font-medium hover:bg-gray-100 transition">
+                                {{ $banner->button_text }}
+                            </a>
+                            @endif
                         </div>
                     </div>
-                </div>
-                <div class="bg-gray-50 mt-4 lg:mt-0 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-                    <img class="aspect-[3/2] object-cover lg:aspect-auto lg:h-full lg:w-full" src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->title }}">
                 </div>
             </div>
             @endforeach
         </div>
         
-        <!-- Carousel Indicators -->
         @if($banners->count() > 1)
-        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+        <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
             @foreach($banners as $index => $banner)
-            <button class="carousel-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition" data-slide="{{ $index }}"></button>
+            <div class="carousel-dot w-2 h-2 rounded-full bg-white/50 hover:bg-white transition" data-slide="{{ $index }}"></div>
             @endforeach
         </div>
         @endif

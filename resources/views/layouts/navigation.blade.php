@@ -4,15 +4,15 @@
      class="fixed top-0 left-0 right-0 z-50 border-b border-gray-200 text-gray-900 transition-all duration-300">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-12 items-center">
+        <div class="flex justify-between h-9 items-center">
             <!-- Logo -->
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <x-application-logo class="block h-6 w-auto fill-current text-gray-900" />
+                    <x-application-logo class="block h-9 w-auto fill-current text-gray-900" />
                 </a>
             </div>
             <!-- Centered Navigation Links -->
-            <div class="hidden md:flex space-x-6 text-sm font-medium">
+            <div class="hidden md:flex space-x-6 text-xs font-medium">
                 <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="px-3 py-1">{{ __('Home') }}</x-nav-link>
                 <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" class="px-3 py-1">{{ __('Products') }}</x-nav-link>
                 <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')" class="px-3 py-1">{{ __('Categories') }}</x-nav-link>
@@ -25,7 +25,7 @@
                 <div>
                     @auth
                         <div class="relative">
-                            <button id="profile-button" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none">
+                            <button id="profile-button" class="flex items-center space-x-6 text-gray-700 hover:text-gray-900 focus:outline-none">
                                 @php
                                     $user = \Illuminate\Support\Facades\Auth::user();
                                     $avatarUrl = $user->avatar;
