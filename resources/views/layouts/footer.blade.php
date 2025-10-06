@@ -1,6 +1,6 @@
 <footer class="bg-gray-900 text-gray-300 py-12 mt-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- About -->
             <div class="lg:col-span-1">
                 <h3 class="text-xl font-bold mb-4 text-white">Toko Sepatu Online</h3>
@@ -30,16 +30,7 @@
                 </ul>
             </div>
 
-            <!-- Customer Service -->
-            <div>
-                <h3 class="text-lg font-semibold mb-4 text-white">Layanan</h3>
-                <ul class="space-y-3">
-                    <li><a href="{{ route('shipping') }}" class="text-gray-400 hover:text-white transition-colors duration-300">Pengiriman</a></li>
-                    <li><a href="{{ route('returns') }}" class="text-gray-400 hover:text-white transition-colors duration-300">Pengembalian</a></li>
-                    <li><a href="{{ route('warranty') }}" class="text-gray-400 hover:text-white transition-colors duration-300">Garansi</a></li>
-                    <li><a href="{{ route('privacy') }}" class="text-gray-400 hover:text-white transition-colors duration-300">Kebijakan Privasi</a></li>
-                </ul>
-            </div>
+
 
             <!-- Contact -->
             <div>
@@ -74,10 +65,9 @@
                     &copy; {{ date('Y') }} Toko Sepatu Online. Semua hak cipta dilindungi.
                 </div>
                 <div class="flex flex-wrap gap-6 text-sm">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Kebijakan Privasi</a>
                     <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Syarat & Ketentuan</a>
                     <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Peta Situs</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">FAQ</a>
+                    <a href="{{ route('faq') }}" class="text-gray-400 hover:text-white transition-colors duration-300">FAQ</a>
                 </div>
             </div>
         </div>

@@ -32,10 +32,7 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'submitContact'])->name('contact.submit');
 Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
-Route::get('/shipping', [HomeController::class, 'shipping'])->name('shipping');
-Route::get('/returns', [HomeController::class, 'returns'])->name('returns');
-Route::get('/warranty', [HomeController::class, 'warranty'])->name('warranty');
-Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
+
 
 // Product Routes
 Route::get('/products', [CustomerProductController::class, 'index'])->name('products.index');
