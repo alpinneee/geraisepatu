@@ -8,42 +8,24 @@
 <div class="bg-white">
     <!-- Hero Banner Section -->
     @if($banners->isNotEmpty())
-    <div class="relative overflow-hidden pt-10">
-        <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
-            @foreach($banners as $banner)
-            <div class="w-full flex-shrink-0 relative h-48 sm:h-56 md:h-64 lg:h-72">
-                <img class="w-full h-full object-cover" 
-                     src="{{ asset('storage/' . $banner->image) }}" 
-                     alt="{{ $banner->title }}">
-                <div class="absolute inset-0 bg-black/40"></div>
-                <div class="absolute inset-0 flex items-center">
-                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-                        <div class="max-w-md">
-                            <h2 class="text-xs lg:text-sm font-bold text-white mb-1">
-                                {{ $banner->title }}
-                            </h2>
-                            <p class="text-[10px] lg:text-xs text-white/90 mb-2">
-                                {{ substr($banner->description, 0, 60) }}{{ strlen($banner->description) > 60 ? '...' : '' }}
-                            </p>
-                            @if($banner->button_text && $banner->button_url)
-                            <a href="{{ $banner->button_url }}" class="inline-block px-2 py-1 bg-white text-gray-900 text-[10px] lg:text-xs font-medium hover:bg-gray-100 transition">
-                                {{ $banner->button_text }}
-                            </a>
-                            @endif
-                        </div>
-                    </div>
+    <div class="bg-gray-100 pt-16">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                    {{ $banners->first()->title }}
+                </h1>
+                <p class="mt-6 text-lg leading-8 text-gray-600">
+                    {{ $banners->first()->description }}
+                </p>
+                @if($banners->first()->button_text && $banners->first()->button_url)
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="{{ $banners->first()->button_url }}" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        {{ $banners->first()->button_text }}
+                    </a>
                 </div>
+                @endif
             </div>
-            @endforeach
         </div>
-        
-        @if($banners->count() > 1)
-        <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
-            @foreach($banners as $index => $banner)
-            <div class="carousel-dot w-2 h-2 rounded-full bg-white/50 hover:bg-white transition" data-slide="{{ $index }}"></div>
-            @endforeach
-        </div>
-        @endif
     </div>
     @endif
 
@@ -194,47 +176,3 @@
 </div>
 @endsection
 
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const carousel = document.getElementById('carousel');
-    const dots = document.querySelectorAll('.carousel-dot');
-    let currentSlide = 0;
-    const totalSlides = dots.length;
-    
-    function updateCarousel() {
-        carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
-        dots.forEach((dot, index) => {
-            if (index === currentSlide) {
-                dot.classList.remove('bg-opacity-50');
-                dot.classList.add('bg-opacity-100');
-            } else {
-                dot.classList.remove('bg-opacity-100');
-                dot.classList.add('bg-opacity-50');
-            }
-        });
-    }
-    
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateCarousel();
-    }
-    
-    // Auto slide every 5 seconds (only if more than 1 slide)
-    if (totalSlides > 1) {
-        setInterval(nextSlide, 5000);
-    }
-    
-    // Manual navigation
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            currentSlide = index;
-            updateCarousel();
-        });
-    });
-    
-    // Initialize
-    updateCarousel();
-});
-</script>
-@endpush
