@@ -103,43 +103,7 @@
                                 Banner Iklan
                             </a>
                             
-                            <div class="relative">
-                                <button onclick="toggleDropdown('analytics')" class="w-full flex items-center justify-between px-2 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100">
-                                    <div class="flex items-center">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                        </svg>
-                                        Analytics
-                                    </div>
-                                    <svg class="w-3 h-3 transition-transform" id="analytics-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </button>
-                                <div id="analytics-dropdown" class="hidden mt-1 ml-6 space-y-1">
-                                    <a href="{{ route('admin.reports') }}" class="block px-2 py-1 text-xs text-gray-600 hover:text-gray-900">Sales Report</a>
-                                    <a href="{{ route('admin.analytics.users') }}" class="block px-2 py-1 text-xs text-gray-600 hover:text-gray-900">User Analytics</a>
-                                </div>
-                            </div>
-                            
-                            <a href="{{ route('admin.reports') }}" class="flex items-center px-2 py-1.5 text-sm font-medium rounded-md {{ request()->routeIs('admin.reports') ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100' }}">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                Reports
-                            </a>
-                            
-                            <a href="{{ route('admin.notifications.index') }}" class="flex items-center justify-between px-2 py-1.5 text-sm font-medium rounded-md {{ request()->routeIs('admin.notifications.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100' }}">
-                                <div class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                                    </svg>
-                                    Notifications
-                                </div>
-                                @php $pendingNotifications = \App\Models\Order::where('status', 'pending')->count() + \App\Models\Order::where('payment_status', 'pending')->count(); @endphp
-                                @if($pendingNotifications > 0)
-                                <span class="bg-red-100 text-red-700 text-xs font-medium px-1.5 py-0.5 rounded-full">{{ $pendingNotifications }}</span>
-                                @endif
-                            </a>
+
                         </nav>
                     </div>
                     
@@ -161,20 +125,7 @@
                                 Security
                             </a>
                             
-                            <a href="{{ route('admin.settings') }}" class="flex items-center px-2 py-1.5 text-sm font-medium rounded-md {{ request()->routeIs('admin.settings') ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100' }}">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                General
-                            </a>
-                            
-                            <a href="{{ route('admin.help.index') }}" class="flex items-center px-2 py-1.5 text-sm font-medium rounded-md {{ request()->routeIs('admin.help.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100' }}">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Help & Support
-                            </a>
+
 
                         </nav>
                     </div>

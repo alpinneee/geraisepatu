@@ -18,6 +18,7 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'order_number',
+        'midtrans_order_id',
         'status',
         'total_amount',
         'shipping_cost',
@@ -63,6 +64,14 @@ class Order extends Model
      * Get the items for the order.
      */
     public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Get the order items for the order.
+     */
+    public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
     }

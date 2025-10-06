@@ -74,6 +74,9 @@ Route::get('/midtrans/finish', [\App\Http\Controllers\MidtransController::class,
 Route::get('/midtrans/unfinish', [\App\Http\Controllers\MidtransController::class, 'unfinish'])->name('midtrans.unfinish');
 Route::get('/midtrans/error', [\App\Http\Controllers\MidtransController::class, 'error'])->name('midtrans.error');
 
+// Webhook API Routes
+Route::post('/api/webhook/midtrans', [\App\Http\Controllers\Admin\BillingController::class, 'webhook'])->name('api.webhook.midtrans');
+
 // Customer Profile Routes
 Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function () {
     Route::get('/', [CustomerProfileController::class, 'index'])->name('index');
@@ -152,37 +155,21 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Admin User Routes
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['create', 'store', 'show']);
     
-    // Admin Reports Routes (placeholder)
-    Route::get('/reports', function () {
-        $totalOrders = \App\Models\Order::count();
-        $totalRevenue = \App\Models\Order::where('payment_status', 'paid')->sum('total_amount');
-        $ordersByStatus = \App\Models\Order::select('status', DB::raw('count(*) as total'))
-            ->groupBy('status')->pluck('total', 'status');
-        $revenueByMonth = \App\Models\Order::where('payment_status', 'paid')
-            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(total_amount) as total')
-            ->groupBy('month')->orderBy('month')->pluck('total', 'month');
-        return view('admin.reports.index', compact('totalOrders', 'totalRevenue', 'ordersByStatus', 'revenueByMonth'));
-    })->name('reports');
-    
-    // Admin Analytics Routes
-    Route::get('/analytics/users', [\App\Http\Controllers\Admin\UserAnalyticsController::class, 'index'])->name('analytics.users');
-    
-    // Admin Notifications Routes
-    Route::get('/notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
-    
     // Admin Billing Routes
     Route::get('/billing', [\App\Http\Controllers\Admin\BillingController::class, 'index'])->name('billing.index');
+    Route::post('/billing/sync', [\App\Http\Controllers\Admin\BillingController::class, 'syncStatus'])->name('billing.sync');
+    Route::get('/billing/invoice/{order}', [\App\Http\Controllers\Admin\BillingController::class, 'downloadInvoice'])->name('billing.invoice');
     
     // Admin Security Routes
     Route::get('/security', [\App\Http\Controllers\Admin\SecurityController::class, 'index'])->name('security.index');
     Route::put('/security/password', [\App\Http\Controllers\Admin\SecurityController::class, 'updatePassword'])->name('security.password');
+    Route::post('/security/password-strength', [\App\Http\Controllers\Admin\SecurityController::class, 'getPasswordStrength'])->name('security.password-strength');
+    Route::post('/security/enable-2fa', [\App\Http\Controllers\Admin\SecurityController::class, 'enable2FA'])->name('security.enable-2fa');
+    Route::post('/security/confirm-2fa', [\App\Http\Controllers\Admin\SecurityController::class, 'confirm2FA'])->name('security.confirm-2fa');
+    Route::post('/security/disable-2fa', [\App\Http\Controllers\Admin\SecurityController::class, 'disable2FA'])->name('security.disable-2fa');
+    Route::post('/security/logout-all', [\App\Http\Controllers\Admin\SecurityController::class, 'logoutAllDevices'])->name('security.logout-all');
     
-    // Admin Help Routes
-    Route::get('/help', [\App\Http\Controllers\Admin\HelpController::class, 'index'])->name('help.index');
-    
-    // Admin Settings Routes
-    Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings');
-    Route::put('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
+
 });
 
 // Google OAuth Routes
