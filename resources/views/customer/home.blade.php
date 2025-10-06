@@ -15,18 +15,18 @@
                 <img class="w-full h-full object-cover" 
                      src="{{ asset('storage/' . $banner->image) }}" 
                      alt="{{ $banner->title }}">
-                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute inset-0 bg-black/50"></div>
                 <div class="absolute inset-0 flex items-center">
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
                         <div class="max-w-2xl">
-                            <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+                            <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                                 {{ $banner->title }}
                             </h2>
-                            <p class="text-lg md:text-xl text-white/90 mb-6">
+                            <p class="text-lg md:text-xl text-white/90 mb-6 drop-shadow-md">
                                 {{ substr($banner->description, 0, 60) }}{{ strlen($banner->description) > 60 ? '...' : '' }}
                             </p>
                             @if($banner->button_text && $banner->button_url)
-                            <a href="{{ $banner->button_url }}" class="inline-block px-6 py-3 bg-white text-gray-900 text-lg font-semibold rounded-lg hover:bg-gray-100 transition">
+                            <a href="{{ $banner->button_url }}" class="inline-block px-6 py-3 bg-white text-gray-900 text-lg font-semibold rounded-lg hover:bg-gray-100 transition shadow-lg">
                                 {{ $banner->button_text }}
                             </a>
                             @endif
