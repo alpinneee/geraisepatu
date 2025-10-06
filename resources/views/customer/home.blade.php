@@ -11,7 +11,7 @@
     <div class="relative overflow-hidden pt-10">
         <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
             @foreach($banners as $banner)
-            <div class="w-full flex-shrink-0 h-64 sm:h-72 md:h-80 lg:h-96">
+            <div class="w-full flex-shrink-0 h-80 sm:h-96 md:h-[28rem] lg:h-[32rem]">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-full">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full items-center">
                         <!-- Left Side - Content -->
@@ -34,7 +34,7 @@
                         <!-- Right Side - Image -->
                         <div class="flex justify-center lg:justify-end">
                             <div class="w-full max-w-md lg:max-w-lg">
-                                <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover rounded-lg shadow-lg" 
+                                <img class="w-full h-56 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg shadow-lg" 
                                      src="{{ asset('storage/' . $banner->image) }}" 
                                      alt="{{ $banner->title }}">
                             </div>
@@ -209,40 +209,67 @@ document.addEventListener('DOMContentLoaded', function() {
     const dots = document.querySelectorAll('.carousel-dot');
     let currentSlide = 0;
     const totalSlides = dots.length;
+    let isTransitioning = false;
     
-    function updateCarousel() {
+    function updateCarousel(smooth = true) {
+        if (smooth) {
+            carousel.style.transition = 'transform 500ms ease-in-out';
+        } else {
+            carousel.style.transition = 'none';
+        }
         carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
         dots.forEach((dot, index) => {
             if (index === currentSlide) {
-                dot.classList.remove('bg-opacity-50');
-                dot.classList.add('bg-opacity-100');
+                dot.classList.remove('bg-gray-300');
+                dot.classList.add('bg-gray-600');
             } else {
-                dot.classList.remove('bg-opacity-100');
-                dot.classList.add('bg-opacity-50');
+                dot.classList.remove('bg-gray-600');
+                dot.classList.add('bg-gray-300');
             }
         });
     }
     
     function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateCarousel();
+        if (isTransitioning) return;
+        
+        isTransitioning = true;
+        currentSlide++;
+        
+        if (currentSlide >= totalSlides) {
+            // Move to the end with animation
+            updateCarousel(true);
+            
+            // After animation completes, reset to beginning without animation
+            setTimeout(() => {
+                currentSlide = 0;
+                updateCarousel(false);
+                isTransitioning = false;
+            }, 500);
+        } else {
+            updateCarousel(true);
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 500);
+        }
     }
     
-    // Auto slide every 5 seconds (only if more than 1 slide)
+    // Auto slide every 4 seconds (only if more than 1 slide)
     if (totalSlides > 1) {
-        setInterval(nextSlide, 5000);
+        setInterval(nextSlide, 4000);
     }
     
     // Manual navigation
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
+            if (isTransitioning) return;
             currentSlide = index;
-            updateCarousel();
+            updateCarousel(true);
         });
     });
     
     // Initialize
-    updateCarousel();
+    updateCarousel(false);
 });
 </script>
 @endpush
