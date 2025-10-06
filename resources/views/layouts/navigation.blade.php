@@ -4,20 +4,20 @@
      class="fixed top-0 left-0 right-0 z-50 border-b border-gray-200 text-gray-900 transition-all duration-300">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-9 items-center">
+        <div class="flex justify-between h-16 items-center">
             <!-- Logo -->
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <x-application-logo class="block h-9 w-auto fill-current text-gray-900" />
+                    <x-application-logo class="block h-10 w-auto fill-current text-gray-900" />
                 </a>
             </div>
             <!-- Centered Navigation Links -->
-            <div class="hidden md:flex space-x-6 text-xs font-medium">
-                <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="px-3 py-1">{{ __('Home') }}</x-nav-link>
-                <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" class="px-3 py-1">{{ __('Products') }}</x-nav-link>
-                <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')" class="px-3 py-1">{{ __('Categories') }}</x-nav-link>
-                <x-nav-link :href="route('about')" :active="request()->routeIs('about')" class="px-3 py-1">{{ __('About') }}</x-nav-link>
-                <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="px-3 py-1">{{ __('Contact') }}</x-nav-link>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="px-3 py-2">{{ __('Home') }}</x-nav-link>
+                <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" class="px-3 py-2">{{ __('Products') }}</x-nav-link>
+                <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')" class="px-3 py-2">{{ __('Categories') }}</x-nav-link>
+                <x-nav-link :href="route('about')" :active="request()->routeIs('about')" class="px-3 py-2">{{ __('About') }}</x-nav-link>
+                <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="px-3 py-2">{{ __('Contact') }}</x-nav-link>
             </div>
             <!-- Right Side -->
             <div class="flex items-center space-x-1">
@@ -42,7 +42,7 @@
                                     }
                                 @endphp
                                 <!-- Debug: {{ $finalAvatarUrl }} -->
-                                <img src="{{ $finalAvatarUrl }}" alt="{{ $user->name }}" class="w-7 h-7 rounded-full object-cover" onerror="console.log('Avatar failed to load:', this.src); this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=6366f1&color=fff';">
+                                <img src="{{ $finalAvatarUrl }}" alt="{{ $user->name }}" class="w-8 h-8 rounded-full object-cover" onerror="console.log('Avatar failed to load:', this.src); this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=6366f1&color=fff';">
                             </button>
                             <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2 z-50 hidden">
                                 <div class="px-4 py-2 border-b border-gray-100">
@@ -60,8 +60,8 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="px-2 py-1 text-xs rounded hover:bg-gray-100 transition">Login</a>
-                        <a href="{{ route('register') }}" class="px-2 py-1 text-xs rounded bg-gray-900 hover:bg-gray-700 text-white transition">Register</a>
+                        <a href="{{ route('login') }}" class="px-3 py-2 text-sm rounded hover:bg-gray-100 transition">Login</a>
+                        <a href="{{ route('register') }}" class="px-3 py-2 text-sm rounded bg-gray-900 hover:bg-gray-700 text-white transition">Register</a>
                     @endauth
                 </div>
                 <!-- Hamburger -->
