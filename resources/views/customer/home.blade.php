@@ -11,7 +11,7 @@
     <div class="relative overflow-hidden pt-10">
         <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
             @foreach($banners as $banner)
-            <div class="w-full flex-shrink-0 h-64 sm:h-72 md:h-80 lg:h-96">
+            <div class="w-full flex-shrink-0 h-80 sm:h-96 md:h-[28rem] lg:h-[32rem]">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-full">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full items-center">
                         <!-- Left Side - Content -->
@@ -34,7 +34,7 @@
                         <!-- Right Side - Image -->
                         <div class="flex justify-center lg:justify-end">
                             <div class="w-full max-w-md lg:max-w-lg">
-                                <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover rounded-lg shadow-lg" 
+                                <img class="w-full h-56 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg shadow-lg" 
                                      src="{{ asset('storage/' . $banner->image) }}" 
                                      alt="{{ $banner->title }}">
                             </div>
