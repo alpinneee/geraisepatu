@@ -60,8 +60,8 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="px-3 py-2 text-sm rounded hover:bg-gray-100 transition">Login</a>
-                        <a href="{{ route('register') }}" class="px-3 py-2 text-sm rounded bg-gray-900 hover:bg-gray-700 text-white transition">Register</a>
+                        <a href="{{ route('login') }}" class="px-2 py-1 text-xs rounded hover:bg-gray-100 transition">Login</a>
+                        <a href="{{ route('register') }}" class="px-2 py-1 text-xs rounded bg-gray-900 hover:bg-gray-700 text-white transition">Register</a>
                     @endauth
                 </div>
                 <!-- Hamburger -->
