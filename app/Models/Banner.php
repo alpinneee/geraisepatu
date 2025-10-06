@@ -8,9 +8,12 @@ class Banner extends Model
 {
     protected $fillable = [
         'title',
-        'description',
+        'description', 
+        'image',
         'button_text',
         'button_url',
+        'button_color',
+        'order',
         'is_active'
     ];
 
@@ -23,5 +26,8 @@ class Banner extends Model
         return $query->where('is_active', true);
     }
 
-
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order');
+    }
 }
