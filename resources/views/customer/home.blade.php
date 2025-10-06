@@ -11,25 +11,33 @@
     <div class="relative overflow-hidden pt-10">
         <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
             @foreach($banners as $banner)
-            <div class="w-full flex-shrink-0 relative h-64 sm:h-72 md:h-80 lg:h-96">
-                <img class="w-full h-full object-cover" 
-                     src="{{ asset('storage/' . $banner->image) }}" 
-                     alt="{{ $banner->title }}">
-                <div class="absolute inset-0 bg-black/50"></div>
-                <div class="absolute inset-0 flex items-center">
-                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-                        <div class="max-w-2xl">
-                            <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+            <div class="w-full flex-shrink-0 h-64 sm:h-72 md:h-80 lg:h-96">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-full">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full items-center">
+                        <!-- Left Side - Content -->
+                        <div class="flex flex-col justify-center space-y-4">
+                            <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
                                 {{ $banner->title }}
                             </h2>
-                            <p class="text-lg md:text-xl text-white/90 mb-6 drop-shadow-md">
-                                {{ substr($banner->description, 0, 60) }}{{ strlen($banner->description) > 60 ? '...' : '' }}
+                            <p class="text-lg md:text-xl text-gray-600">
+                                {{ $banner->description }}
                             </p>
                             @if($banner->button_text && $banner->button_url)
-                            <a href="{{ $banner->button_url }}" class="inline-block px-6 py-3 bg-white text-gray-900 text-lg font-semibold rounded-lg hover:bg-gray-100 transition shadow-lg">
-                                {{ $banner->button_text }}
-                            </a>
+                            <div>
+                                <a href="{{ $banner->button_url }}" class="inline-block px-6 py-3 bg-gray-900 text-white text-lg font-semibold rounded-lg hover:bg-gray-800 transition shadow-lg">
+                                    {{ $banner->button_text }}
+                                </a>
+                            </div>
                             @endif
+                        </div>
+                        
+                        <!-- Right Side - Image -->
+                        <div class="flex justify-center lg:justify-end">
+                            <div class="w-full max-w-md lg:max-w-lg">
+                                <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover rounded-lg shadow-lg" 
+                                     src="{{ asset('storage/' . $banner->image) }}" 
+                                     alt="{{ $banner->title }}">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -38,9 +46,9 @@
         </div>
         
         @if($banners->count() > 1)
-        <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             @foreach($banners as $index => $banner)
-            <div class="carousel-dot w-2 h-2 rounded-full bg-white/50 hover:bg-white transition" data-slide="{{ $index }}"></div>
+            <div class="carousel-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-600 transition cursor-pointer" data-slide="{{ $index }}"></div>
             @endforeach
         </div>
         @endif
