@@ -11,7 +11,7 @@
     <div class="relative overflow-hidden pt-10">
         <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
             @foreach($banners as $banner)
-            <div class="w-full flex-shrink-0 relative h-54 sm:h-62 md:h-80 lg:h-96">
+            <div class="w-full flex-shrink-0 relative h-74 sm:h-82 md:h-90 lg:h-106">
                 <img class="w-full h-full object-cover" 
                      src="{{ asset('storage/' . $banner->image) }}" 
                      alt="{{ $banner->title }}">
