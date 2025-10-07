@@ -170,7 +170,7 @@
                         </div>
                         <h4 class="text-lg font-medium text-gray-900 mb-2">2FA is Disabled</h4>
                         <p class="text-sm text-gray-600 mb-4">Enable two-factor authentication for better security</p>
-                        <button onclick="enable2FA()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
+                        <button onclick="enable2FA()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition" id="enable2FABtn">
                             Enable 2FA
                         </button>
                     </div>
@@ -266,15 +266,17 @@
 </div>
 
 <!-- 2FA Setup Modal -->
-<div id="twoFactorModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+<div id="twoFactorModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden" style="z-index: 9999;">
     <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-white rounded-lg max-w-md w-full p-6">
+        <div class="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
             <div class="text-center">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Setup Two-Factor Authentication</h3>
-                <div id="qrCodeContainer" class="mb-4"></div>
-                <p class="text-sm text-gray-600 mb-4">Scan this QR code with your authenticator app</p>
-                <input type="text" id="twoFactorCode" placeholder="Enter 6-digit code" 
-                       class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 mb-4">
+                <div id="qrCodeContainer" class="mb-4">
+                    <!-- QR Code or manual entry will be inserted here -->
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Enter the 6-digit code from your authenticator app</p>
+                <input type="text" id="twoFactorCode" placeholder="Enter 6-digit code (demo: 123456)" 
+                       class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 mb-4" maxlength="6">
                 <div class="flex gap-2">
                     <button onclick="confirm2FA()" class="flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
                         Verify & Enable
@@ -319,21 +321,63 @@ document.getElementById('newPassword').addEventListener('input', function() {
 
 // 2FA Functions
 function enable2FA() {
+    console.log('Enable 2FA clicked');
+    
+    const button = document.getElementById('enable2FABtn');
+    const originalText = button.innerHTML;
+    
+    // Show loading state
+    button.innerHTML = 'Loading...';
+    button.disabled = true;
+    
     fetch('{{ route("admin.security.enable-2fa") }}', {
         method: 'POST',
         headers: {
+            'Content-Type': 'application/json',
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
-        document.getElementById('qrCodeContainer').innerHTML = `<img src="data:image/png;base64,${data.qr_code}" class="mx-auto">`;
-        document.getElementById('twoFactorModal').classList.remove('hidden');
+        console.log('Response data:', data);
+        if (data.success) {
+            // Show manual entry instead of QR code for now
+            document.getElementById('qrCodeContainer').innerHTML = `
+                <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                    <p class="text-sm font-medium text-gray-700 mb-2">Manual Entry Key:</p>
+                    <code class="text-sm bg-white p-2 rounded border block">${data.secret}</code>
+                    <p class="text-xs text-gray-500 mt-2">Enter this key in your authenticator app (Google Authenticator, Authy, etc.)</p>
+                </div>
+            `;
+            document.getElementById('twoFactorModal').classList.remove('hidden');
+        } else {
+            alert('Error: ' + (data.message || 'Failed to enable 2FA'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error enabling 2FA: ' + error.message);
+    })
+    .finally(() => {
+        // Restore button state
+        button.innerHTML = originalText;
+        button.disabled = false;
     });
 }
 
 function confirm2FA() {
     const code = document.getElementById('twoFactorCode').value;
+    
+    if (!code || code.length !== 6) {
+        alert('Please enter a 6-digit code');
+        return;
+    }
     
     fetch('{{ route("admin.security.confirm-2fa") }}', {
         method: 'POST',
@@ -343,14 +387,23 @@ function confirm2FA() {
         },
         body: JSON.stringify({ code: code })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             alert('2FA enabled successfully! Save your recovery codes: ' + data.recovery_codes.join(', '));
             location.reload();
         } else {
-            alert('Invalid code. Please try again.');
+            alert('Invalid code. Please try again. (For demo, use: 123456)');
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error confirming 2FA: ' + error.message);
     });
 }
 
@@ -404,5 +457,23 @@ function logoutAllDevices() {
     document.body.appendChild(form);
     form.submit();
 }
+
+// Add event listener when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up 2FA button');
+    
+    // Alternative event listener for 2FA button
+    const enable2FABtn = document.getElementById('enable2FABtn');
+    if (enable2FABtn) {
+        enable2FABtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('2FA button clicked via event listener');
+            enable2FA();
+        });
+    }
+    
+    // Test CSRF token
+    console.log('CSRF Token:', '{{ csrf_token() }}');
+});
 </script>
 @endsection

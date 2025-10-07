@@ -100,15 +100,28 @@ class SecurityController extends Controller
 
     public function enable2FA()
     {
-        $user = Auth::user();
-        $secret = $this->generateSecret();
-        
-        $user->update(['two_factor_secret' => $secret]);
+        try {
+            $user = Auth::user();
+            $secret = $this->generateSecret();
+            
+            $user->update(['two_factor_secret' => $secret]);
 
-        return response()->json([
-            'secret' => $secret,
-            'qr_code' => base64_encode('QR Code placeholder - Use authenticator app with secret: ' . $secret)
-        ]);
+            // Generate a simple QR code placeholder
+            $qrCodeData = "otpauth://totp/" . config('app.name') . ":" . $user->email . "?secret=" . $secret . "&issuer=" . config('app.name');
+            $qrCodeBase64 = base64_encode($qrCodeData);
+
+            return response()->json([
+                'success' => true,
+                'secret' => $secret,
+                'qr_code' => $qrCodeBase64,
+                'manual_entry' => $secret
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to enable 2FA: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function confirm2FA(Request $request)
