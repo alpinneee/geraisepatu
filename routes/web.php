@@ -164,9 +164,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/security', [\App\Http\Controllers\Admin\SecurityController::class, 'index'])->name('security.index');
     Route::put('/security/password', [\App\Http\Controllers\Admin\SecurityController::class, 'updatePassword'])->name('security.password');
     Route::post('/security/password-strength', [\App\Http\Controllers\Admin\SecurityController::class, 'getPasswordStrength'])->name('security.password-strength');
-    Route::post('/security/enable-2fa', [\App\Http\Controllers\Admin\SecurityController::class, 'enable2FA'])->name('security.enable-2fa');
-    Route::post('/security/confirm-2fa', [\App\Http\Controllers\Admin\SecurityController::class, 'confirm2FA'])->name('security.confirm-2fa');
-    Route::post('/security/disable-2fa', [\App\Http\Controllers\Admin\SecurityController::class, 'disable2FA'])->name('security.disable-2fa');
+
     Route::post('/security/logout-all', [\App\Http\Controllers\Admin\SecurityController::class, 'logoutAllDevices'])->name('security.logout-all');
     
 

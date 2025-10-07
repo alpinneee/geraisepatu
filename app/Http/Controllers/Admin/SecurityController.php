@@ -98,87 +98,7 @@ class SecurityController extends Controller
         return back()->with('success', 'Password updated successfully');
     }
 
-    public function enable2FA()
-    {
-        try {
-            $user = Auth::user();
-            $secret = $this->generateSecret();
-            
-            $user->update(['two_factor_secret' => $secret]);
 
-            // Generate a simple QR code placeholder
-            $qrCodeData = "otpauth://totp/" . config('app.name') . ":" . $user->email . "?secret=" . $secret . "&issuer=" . config('app.name');
-            $qrCodeBase64 = base64_encode($qrCodeData);
-
-            return response()->json([
-                'success' => true,
-                'secret' => $secret,
-                'qr_code' => $qrCodeBase64,
-                'manual_entry' => $secret
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to enable 2FA: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function confirm2FA(Request $request)
-    {
-        $request->validate([
-            'code' => 'required|digits:6'
-        ]);
-
-        $user = Auth::user();
-        // Simple validation - accept test code for demo
-        $valid = $request->code === '123456';
-
-        if ($valid) {
-            $recoveryCodes = collect(range(1, 8))->map(function () {
-                return Str::random(10);
-            });
-
-            $user->update([
-                'two_factor_enabled' => true,
-                'two_factor_confirmed_at' => now(),
-                'two_factor_recovery_codes' => $recoveryCodes
-            ]);
-
-            $this->sendSecurityNotification($user, '2FA Enabled', 'Two-factor authentication has been enabled on your account.');
-
-            return response()->json([
-                'success' => true,
-                'recovery_codes' => $recoveryCodes
-            ]);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Invalid code']);
-    }
-
-    public function disable2FA(Request $request)
-    {
-        $request->validate([
-            'password' => 'required'
-        ]);
-
-        $user = Auth::user();
-
-        if (!Hash::check($request->password, $user->password)) {
-            return response()->json(['success' => false, 'message' => 'Invalid password']);
-        }
-
-        $user->update([
-            'two_factor_enabled' => false,
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
-            'two_factor_confirmed_at' => null
-        ]);
-
-        $this->sendSecurityNotification($user, '2FA Disabled', 'Two-factor authentication has been disabled on your account.');
-
-        return response()->json(['success' => true]);
-    }
 
     public function logoutAllDevices(Request $request)
     {
@@ -233,10 +153,7 @@ class SecurityController extends Controller
         ]);
     }
 
-    private function generateSecret()
-    {
-        return strtoupper(Str::random(16));
-    }
+
 
     private function sendSecurityNotification($user, $subject, $message)
     {
