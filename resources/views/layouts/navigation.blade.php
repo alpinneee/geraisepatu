@@ -15,7 +15,24 @@
             <div class="hidden md:flex space-x-8 text-sm font-medium">
                 <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="px-3 py-2">{{ __('Home') }}</x-nav-link>
                 <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" class="px-3 py-2">{{ __('Products') }}</x-nav-link>
-                <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')" class="px-3 py-2">{{ __('Categories') }}</x-nav-link>
+                
+                <!-- Categories Dropdown -->
+                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                    <div class="px-3 py-2 text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer">
+                        {{ __('Categories') }}
+                    </div>
+                    <div x-show="open" x-transition class="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border py-2 z-50">
+                        @php
+                            $categories = \App\Models\Category::active()->ordered()->get();
+                        @endphp
+                        @foreach($categories as $category)
+                            <a href="{{ route('products.category', $category->slug) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">{{ $category->name }}</a>
+                        @endforeach
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="{{ route('categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-medium">Semua Kategori</a>
+                    </div>
+                </div>
+                
                 <x-nav-link :href="route('about')" :active="request()->routeIs('about')" class="px-3 py-2">{{ __('About') }}</x-nav-link>
                 <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="px-3 py-2">{{ __('Contact') }}</x-nav-link>
             </div>
@@ -42,7 +59,7 @@
                                     }
                                 @endphp
                                 <!-- Debug: {{ $finalAvatarUrl }} -->
-                                <img src="{{ $finalAvatarUrl }}" alt="{{ $user->name }}" class="w-8 h-8 rounded-full object-cover" onerror="console.log('Avatar failed to load:', this.src); this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=6366f1&color=fff';">
+                                <img src="{{ $finalAvatarUrl }}" alt="{{ $user->name }}" class="w-6 h-6 rounded-full object-cover" onerror="console.log('Avatar failed to load:', this.src); this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=6366f1&color=fff';">
                             </button>
                             <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2 z-50 hidden">
                                 <div class="px-4 py-2 border-b border-gray-100">
@@ -79,7 +96,19 @@
         <div class="pt-2 pb-3 space-y-1 px-4 text-sm">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">{{ __('Home') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">{{ __('Products') }}</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">{{ __('Categories') }}</x-responsive-nav-link>
+            
+            <!-- Categories Section -->
+            <div class="py-2">
+                <div class="text-gray-900 font-medium mb-2">{{ __('Categories') }}</div>
+                @php
+                    $categories = \App\Models\Category::active()->ordered()->take(5)->get();
+                @endphp
+                @foreach($categories as $category)
+                    <x-responsive-nav-link :href="route('products.category', $category->slug)" class="pl-4">{{ $category->name }}</x-responsive-nav-link>
+                @endforeach
+                <x-responsive-nav-link :href="route('categories.index')" class="pl-4 text-gray-600">Semua Kategori</x-responsive-nav-link>
+            </div>
+            
             <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">{{ __('About') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">{{ __('Contact') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
