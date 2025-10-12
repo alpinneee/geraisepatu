@@ -1,0 +1,27 @@
+.liquid-glass-btn {
+  position: relative;
+  padding: 5px 12px;
+  font-size: 10px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: white;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.liquid-glass-btn:hover {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: white;
+}
+
+/* Larger button variant for product page */
+.liquid-glass-btn.flex-1 {
+  padding: 12px 24px;
+  font-size: 16px;
+}

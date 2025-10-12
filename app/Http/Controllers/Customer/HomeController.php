@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactFormMail;
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -72,10 +75,32 @@ class HomeController extends Controller
             'message' => 'required|string',
         ]);
         
-        // Here you would typically send an email or save to database
-        // For now, we'll just redirect with a success message
+        $contactData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'submitted_at' => now(),
+        ];
         
-        return back()->with('success', 'Thank you for your message. We will get back to you soon!');
+        try {
+            // Simpan ke database
+            Contact::create([
+                'name' => $contactData['name'],
+                'email' => $contactData['email'],
+                'subject' => $contactData['subject'],
+                'message' => $contactData['message'],
+            ]);
+            
+            // Kirim email ke admin
+            $adminEmail = config('mail.admin_email', 'admin@geraisepatu.xyz');
+            Mail::to($adminEmail)->send(new ContactFormMail($contactData));
+            
+            return back()->with('success', 'Terima kasih atas pesan Anda. Tim kami akan segera menghubungi Anda!');
+        } catch (\Exception $e) {
+            \Log::error('Failed to send contact form email: ' . $e->getMessage());
+            return back()->with('error', 'Maaf, terjadi kesalahan saat mengirim pesan. Silakan coba lagi.');
+        }
     }
     
     /**

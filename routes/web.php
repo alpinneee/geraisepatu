@@ -164,8 +164,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/security', [\App\Http\Controllers\Admin\SecurityController::class, 'index'])->name('security.index');
     Route::put('/security/password', [\App\Http\Controllers\Admin\SecurityController::class, 'updatePassword'])->name('security.password');
     Route::post('/security/password-strength', [\App\Http\Controllers\Admin\SecurityController::class, 'getPasswordStrength'])->name('security.password-strength');
-
     Route::post('/security/logout-all', [\App\Http\Controllers\Admin\SecurityController::class, 'logoutAllDevices'])->name('security.logout-all');
+    
+    // Admin Contact Routes
+    Route::resource('contacts', \App\Http\Controllers\Admin\ContactController::class)->only(['index', 'show', 'destroy']);
+    Route::patch('/contacts/{contact}/mark-as-replied', [\App\Http\Controllers\Admin\ContactController::class, 'markAsReplied'])->name('contacts.mark-as-replied');
+    Route::post('/contacts/mark-as-read', [\App\Http\Controllers\Admin\ContactController::class, 'markAsRead'])->name('contacts.mark-as-read');
+    Route::delete('/contacts/bulk-delete', [\App\Http\Controllers\Admin\ContactController::class, 'bulkDelete'])->name('contacts.bulk-delete');
     
 
 });
@@ -183,6 +188,7 @@ require __DIR__.'/checkout-debug.php';
 require __DIR__.'/checkout-test.php';
 require __DIR__.'/cart-test.php';
 require __DIR__.'/order-debug.php';
+require __DIR__.'/test-email.php';
 
 // Laravel Breeze Routes
 require __DIR__.'/auth.php';
