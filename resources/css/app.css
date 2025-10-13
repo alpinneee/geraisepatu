@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @import 'category-images.css';
-@import 'liquid-glass.css';
 
 /* Custom dropdown improvements */
 @layer components {
