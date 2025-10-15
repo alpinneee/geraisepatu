@@ -1,8 +1,8 @@
 {
-  "name": "e-commerce-toko-sepatu",
+  "name": "kickverse",
   "version": "1.0.0",
   "type": "module",
-  "description": "A modern e-commerce application built with Laravel for selling shoes online. This application provides a complete shopping experience with user authentication, product management, shopping cart, checkout process, and order management.",
+  "description": "KickVerse - A modern e-commerce application built with Laravel for selling shoes online. This application provides a complete shopping experience with user authentication, product management, shopping cart, checkout process, and order management.",
   "main": "postcss.config.js",
   "directories": {
     "test": "tests"

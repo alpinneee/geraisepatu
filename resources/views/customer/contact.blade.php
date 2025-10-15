@@ -118,7 +118,7 @@
                         </div>
                         <div class="ml-4">
                             <dt class="text-lg font-medium text-gray-900">Email</dt>
-                            <dd class="mt-1 text-gray-600">info@tokosepatu.com</dd>
+                            <dd class="mt-1 text-gray-600">info@kickverse.xyz</dd>
                         </div>
                     </div>
 

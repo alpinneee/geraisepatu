@@ -1,6 +1,6 @@
 @extends('layouts.customer')
 
-@section('title', 'Shipping Addresses - Toko Sepatu')
+@section('title', 'Shipping Addresses - KickVerse')
 
 @section('content')
 <div class="container mx-auto px-4 py-8">

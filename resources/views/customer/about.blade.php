@@ -8,7 +8,7 @@
         <div class="text-center">
             <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Tentang Kami</h1>
             <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-600">
-                Toko Sepatu adalah toko online terpercaya yang menyediakan berbagai jenis sepatu berkualitas dengan harga terjangkau.
+                KickVerse adalah toko online terpercaya yang menyediakan berbagai jenis sepatu berkualitas dengan harga terjangkau.
             </p>
         </div>
 

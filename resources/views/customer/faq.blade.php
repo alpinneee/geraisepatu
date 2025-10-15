@@ -16,7 +16,7 @@
             <div class="space-y-8">
                 <div x-data="{ open: false }" class="border-b border-gray-200 pb-6">
                     <button @click="open = !open" class="flex w-full items-center justify-between text-left">
-                        <h3 class="text-lg font-medium text-gray-900">Bagaimana cara melakukan pembelian di Toko Sepatu?</h3>
+                        <h3 class="text-lg font-medium text-gray-900">Bagaimana cara melakukan pembelian di KickVerse?</h3>
                         <span class="ml-6 flex-shrink-0">
                             <svg x-show="!open" class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -27,7 +27,7 @@
                         </span>
                     </button>
                     <div x-show="open" class="mt-4 text-base text-gray-600">
-                        <p>Untuk melakukan pembelian di Toko Sepatu, ikuti langkah-langkah berikut:</p>
+                        <p>Untuk melakukan pembelian di KickVerse, ikuti langkah-langkah berikut:</p>
                         <ol class="list-decimal pl-6 mt-2 space-y-1">
                             <li>Pilih produk yang ingin Anda beli</li>
                             <li>Klik tombol "Tambahkan ke Keranjang"</li>
@@ -185,11 +185,11 @@
                     <div x-show="open" class="mt-4 text-base text-gray-600">
                         <p>Anda dapat menghubungi layanan pelanggan kami melalui:</p>
                         <ul class="list-disc pl-6 mt-2 space-y-1">
-                            <li>Email: cs@tokosepatu.com</li>
+                            <li>Email: cs@kickverse.xyz</li>
                             <li>Telepon: +62 123 4567 890 (Senin-Jumat, 08.00-17.00)</li>
                             <li>Live Chat: Tersedia di website kami (24/7)</li>
                             <li>WhatsApp: +62 987 6543 210</li>
-                            <li>Media Sosial: Instagram, Facebook, Twitter (@tokosepatu)</li>
+                            <li>Media Sosial: Instagram, Facebook, Twitter (@kickverse)</li>
                         </ul>
                         <p class="mt-2">Tim layanan pelanggan kami akan merespons pertanyaan Anda dalam waktu 1x24 jam pada hari kerja.</p>
                     </div>

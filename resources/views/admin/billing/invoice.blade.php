@@ -17,7 +17,7 @@
 <body>
     <div class="header">
         <h1>INVOICE</h1>
-        <h2>{{ config('app.name', 'Toko Sepatu') }}</h2>
+        <h2>{{ config('app.name', 'KickVerse') }}</h2>
     </div>
 
     <div class="invoice-info">

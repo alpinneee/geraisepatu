@@ -204,12 +204,12 @@
         <div class="invoice-header">
             <div class="company-info">
                 <div>
-                    <div class="company-logo">🏪 Toko Sepatu</div>
+                    <div class="company-logo">🏪 KickVerse</div>
                     <div style="margin-top: 10px; color: #6b7280; font-size: 14px;">
                         Jl. Sepatu Raya No. 123<br>
                         Jakarta Selatan, 12345<br>
                         Telp: (021) 123-4567<br>
-                        Email: info@tokosepatu.com
+                        Email: info@kickverse.xyz
                     </div>
                 </div>
                 <div class="invoice-details">
@@ -332,7 +332,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <div>Invoice ini dibuat secara otomatis oleh sistem Toko Sepatu</div>
+            <div>Invoice ini dibuat secara otomatis oleh sistem KickVerse</div>
             <div style="margin-top: 5px;">Terima kasih telah berbelanja dengan kami! 🙏</div>
         </div>
     </div>

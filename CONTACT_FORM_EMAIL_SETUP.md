@@ -1,4 +1,4 @@
-# Setup Email Contact Form - Toko Sepatu Online
+# Setup Email Contact Form - KickVerse
 
 ## Overview
 Implementasi lengkap untuk mengirim email ke admin ketika ada form contact yang disubmit di website https://geraisepatu.xyz/contact
@@ -60,7 +60,7 @@ MAIL_PORT=587
 MAIL_USERNAME=resend
 MAIL_PASSWORD=re_WEStXXvh_3GVQEvXZqz2md1QVdLHKN9Vj
 MAIL_FROM_ADDRESS="noreply@geraisepatu.xyz"
-MAIL_FROM_NAME="Toko Sepatu Online"
+MAIL_FROM_NAME="KickVerse"
 MAIL_ENCRYPTION=tls
 MAIL_ADMIN_EMAIL="admin@geraisepatu.xyz"
 

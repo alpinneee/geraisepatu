@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- About -->
             <div class="lg:col-span-1">
-                <h3 class="text-xl font-bold mb-4 text-white">Toko Sepatu Online</h3>
+                <h3 class="text-xl font-bold mb-4 text-white">KickVerse</h3>
                 <p class="text-gray-400 mb-6 leading-relaxed">Toko sepatu terlengkap dengan koleksi terbaru dan terbaik untuk semua usia.</p>
                 <div class="flex space-x-4">
                     <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors duration-300">
@@ -47,7 +47,7 @@
                         <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
-                        <a href="mailto:info@tokosepatu.com" class="text-gray-400 hover:text-white transition-colors duration-300">info@tokosepatu.com</a>
+                        <a href="mailto:info@kickverse.xyz" class="text-gray-400 hover:text-white transition-colors duration-300">info@kickverse.xyz</a>
                     </li>
                     <li class="flex items-center">
                         <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@
         <div class="mt-12 pt-8 border-t border-gray-800">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="text-gray-400 text-sm">
-                    &copy; {{ date('Y') }} Toko Sepatu Online. Semua hak cipta dilindungi.
+                    &copy; {{ date('Y') }} KickVerse. Semua hak cipta dilindungi.
                 </div>
                 <div class="flex flex-wrap gap-6 text-sm">
                     <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Syarat & Ketentuan</a>

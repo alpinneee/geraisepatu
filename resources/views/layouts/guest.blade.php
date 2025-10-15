@@ -51,7 +51,7 @@
                 <div class="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full translate-x-1/2 translate-y-1/2"></div>
                 <div class="relative z-10 flex flex-col justify-center items-center text-white p-12">
                     <div class="text-center animate-fade-in">
-                        <h1 class="text-4xl font-bold mb-4 animate-slide-up">Toko Sepatu</h1>
+                        <h1 class="text-4xl font-bold mb-4 animate-slide-up">KickVerse</h1>
                         <p class="text-xl text-white/80 mb-8 animate-slide-up animation-delay-2000">Platform sepatu terpercaya untuk gaya hidup Anda</p>
                         <div class="space-y-4 text-left">
                             <div class="flex items-center space-x-3 animate-slide-up animation-delay-4000">
