@@ -209,7 +209,7 @@
                         Jl. Sepatu Raya No. 123<br>
                         Jakarta Selatan, 12345<br>
                         Telp: (021) 123-4567<br>
-                        Email: info@kickverse.xyz
+                        Email: info@geraisepatu.xyz
                     </div>
                 </div>
                 <div class="invoice-details">

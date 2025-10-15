@@ -185,7 +185,7 @@
                     <div x-show="open" class="mt-4 text-base text-gray-600">
                         <p>Anda dapat menghubungi layanan pelanggan kami melalui:</p>
                         <ul class="list-disc pl-6 mt-2 space-y-1">
-                            <li>Email: cs@kickverse.xyz</li>
+                            <li>Email: cs@geraisepatu.xyz</li>
                             <li>Telepon: +62 123 4567 890 (Senin-Jumat, 08.00-17.00)</li>
                             <li>Live Chat: Tersedia di website kami (24/7)</li>
                             <li>WhatsApp: +62 987 6543 210</li>

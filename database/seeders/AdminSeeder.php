@@ -17,7 +17,7 @@ class AdminSeeder extends Seeder
         // Buat akun admin
         $admin = User::create([
             'name' => 'Administrator',
-            'email' => 'admin@kickverse.xyz',
+            'email' => 'admin@geraisepatu.xyz',
             'password' => Hash::make('admin123'),
             'email_verified_at' => now(),
         ]);
@@ -26,7 +26,7 @@ class AdminSeeder extends Seeder
         $admin->assignRole('admin');
 
         $this->command->info('Admin account created successfully!');
-        $this->command->info('Email: admin@kickverse.xyz');
+        $this->command->info('Email: admin@geraisepatu.xyz');
         $this->command->info('Password: admin123');
     }
 }
