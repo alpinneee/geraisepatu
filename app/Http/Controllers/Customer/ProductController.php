@@ -136,10 +136,10 @@ class ProductController extends Controller
             'user_id' => Auth::id(),
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'is_approved' => false, // Require admin approval
+            'is_approved' => true, // Auto approve
         ]);
         
-        return back()->with('success', 'Thank you for your review. It will be visible after approval.');
+        return back()->with('success', 'Terima kasih atas ulasan Anda!');
     }
     
     /**
