@@ -103,16 +103,7 @@
                                 Banner Iklan
                             </a>
                             
-                            <a href="{{ route('admin.reviews.index') }}" class="flex items-center justify-between px-2 py-1.5 text-sm font-medium rounded-md {{ request()->routeIs('admin.reviews.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100' }}">
-                                <div class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                                    </svg>
-                                    Ulasan
-                                </div>
-                                <span class="bg-gray-200 text-gray-700 text-xs font-medium px-1.5 py-0.5 rounded-full">{{ \App\Models\Review::where('is_approved', false)->count() }}</span>
-                            </a>
-                            
+
                             <a href="{{ route('admin.contacts.index') }}" class="flex items-center justify-between px-2 py-1.5 text-sm font-medium rounded-md {{ request()->routeIs('admin.contacts.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100' }}">
                                 <div class="flex items-center">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

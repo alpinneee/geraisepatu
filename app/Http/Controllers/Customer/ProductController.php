@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Review;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -95,9 +95,7 @@ class ProductController extends Controller
     {
         $product = Product::active()
             ->where('slug', $slug)
-            ->with(['category', 'images', 'sizes', 'reviews' => function($query) {
-                $query->approved()->with('user')->latest();
-            }])
+            ->with(['category', 'images', 'sizes'])
             ->firstOrFail();
         
         // Get related products
@@ -111,36 +109,7 @@ class ProductController extends Controller
         return view('customer.products.show', compact('product', 'relatedProducts'));
     }
     
-    /**
-     * Store a product review.
-     */
-    public function storeReview(Request $request, Product $product)
-    {
-        $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|min:5',
-        ]);
-        
-        // Check if user has already reviewed this product
-        $existingReview = Review::where('user_id', Auth::id())
-            ->where('product_id', $product->id)
-            ->first();
-        
-        if ($existingReview) {
-            return back()->with('error', 'You have already reviewed this product.');
-        }
-        
-        // Create the review
-        Review::create([
-            'product_id' => $product->id,
-            'user_id' => Auth::id(),
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-            'is_approved' => true, // Auto approve
-        ]);
-        
-        return back()->with('success', 'Terima kasih atas ulasan Anda!');
-    }
+
     
     /**
      * Display products by category.

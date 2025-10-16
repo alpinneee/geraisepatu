@@ -115,10 +115,7 @@ Route::middleware(['auth'])->prefix('wishlist')->name('wishlist.')->group(functi
 
 
 
-// Review Routes
-Route::middleware(['auth'])->group(function () {
-    Route::post('/products/{product}/review', [CustomerProductController::class, 'storeReview'])->name('products.review');
-});
+
 
 // Dashboard Route (for auth redirect compatibility)
 Route::get('/dashboard', function () {
@@ -172,11 +169,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/contacts/mark-as-read', [\App\Http\Controllers\Admin\ContactController::class, 'markAsRead'])->name('contacts.mark-as-read');
     Route::delete('/contacts/bulk-delete', [\App\Http\Controllers\Admin\ContactController::class, 'bulkDelete'])->name('contacts.bulk-delete');
     
-    // Admin Review Routes
-    Route::get('/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');
-    Route::patch('/reviews/{review}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('reviews.approve');
-    Route::patch('/reviews/{review}/reject', [\App\Http\Controllers\Admin\ReviewController::class, 'reject'])->name('reviews.reject');
-    Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
+
     
 
 });
