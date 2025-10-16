@@ -282,7 +282,7 @@
                         <div class="mb-4">
                             <label for="comment" class="block text-sm font-medium text-gray-700">Komentar</label>
                             <div class="mt-1">
-                                <textarea id="comment" name="comment" rows="3" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Bagikan pengalaman Anda dengan produk ini"></textarea>
+                                <textarea id="comment" name="comment" rows="3" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Bagikan pengalaman Anda dengan produk ini (minimal 5 karakter)"></textarea>
                             </div>
                             @error('comment')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

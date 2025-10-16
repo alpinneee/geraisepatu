@@ -118,7 +118,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|min:10',
+            'comment' => 'required|string|min:5',
         ]);
         
         // Check if user has already reviewed this product
