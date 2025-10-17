@@ -111,7 +111,7 @@
                                     </svg>
                                     Kontak
                                 </div>
-                                <span class="bg-gray-200 text-gray-700 text-xs font-medium px-1.5 py-0.5 rounded-full">{{ \App\Models\Contact::where('is_replied', false)->count() }}</span>
+                                <span class="bg-gray-200 text-gray-700 text-xs font-medium px-1.5 py-0.5 rounded-full">{{ \App\Models\Contact::whereNull('replied_at')->count() }}</span>
                             </a>
                             
 
