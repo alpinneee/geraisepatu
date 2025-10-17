@@ -26,8 +26,6 @@ class Product extends Model
         'stock',
         'weight',
         'is_active',
-        'meta_title',
-        'meta_description',
     ];
 
     /**

@@ -28,12 +28,10 @@ class Order extends Model
         'payment_status',
         'payment_details',
         'payment_proof',
-        'payment_instructions',
         'payment_proof_uploaded_at',
         'shipping_address',
         'shipping_expedition',
         'shipping_expedition_name',
-        'shipping_estimation',
         'notes',
     ];
 

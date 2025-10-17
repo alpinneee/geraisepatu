@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
-use App\Models\Coupon;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,30 +43,15 @@ class CartController extends Controller
         
         // Calculate totals
         $subtotal = 0;
-        $discount = 0;
         
         foreach ($cartItems as $item) {
             $price = $item->product->discount_price ?? $item->product->price;
             $subtotal += $price * $item->quantity;
         }
         
-        // Get applied coupon
-        $coupon = null;
-        $couponCode = Session::get('coupon_code');
+        $total = $subtotal;
         
-        if ($couponCode) {
-            $coupon = Coupon::where('code', $couponCode)->first();
-            if ($coupon && $coupon->isValid() && $subtotal >= $coupon->min_amount) {
-                $discount = $coupon->calculateDiscount($subtotal);
-            } else {
-                // Remove invalid coupon
-                Session::forget('coupon_code');
-            }
-        }
-        
-        $total = $subtotal - $discount;
-        
-        return view('customer.cart', compact('cartItems', 'subtotal', 'discount', 'total', 'coupon'));
+        return view('customer.cart', compact('cartItems', 'subtotal', 'total'));
     }
     
     /**
@@ -265,72 +249,6 @@ class CartController extends Controller
             Session::forget('cart');
         }
         
-        // Also clear any applied coupon
-        Session::forget('coupon_code');
-        
         return redirect()->route('cart.index')->with('success', 'Cart cleared');
-    }
-    
-    /**
-     * Apply a coupon code.
-     */
-    public function applyCoupon(Request $request)
-    {
-        $request->validate([
-            'coupon_code' => 'required|string|max:50',
-        ]);
-        
-        $coupon = Coupon::where('code', $request->coupon_code)
-            ->active()
-            ->validByDate()
-            ->hasAvailableUsage()
-            ->first();
-        
-        if (!$coupon) {
-            return back()->with('error', 'Invalid or expired coupon code');
-        }
-        
-        // Calculate cart subtotal to check minimum amount
-        if (Auth::check()) {
-            $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
-        } else {
-            $cartItems = collect(Session::get('cart', []));
-            
-            if ($cartItems->isNotEmpty()) {
-                $productIds = $cartItems->pluck('product_id')->toArray();
-                $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
-                
-                $cartItems = $cartItems->map(function ($item) use ($products) {
-                    $item['product'] = $products[$item['product_id']] ?? null;
-                    return $item;
-                })->filter(function ($item) {
-                    return $item['product'] !== null;
-                });
-            }
-        }
-        
-        $subtotal = 0;
-        foreach ($cartItems as $item) {
-            $price = $item->product->discount_price ?? $item->product->price;
-            $subtotal += $price * $item->quantity;
-        }
-        
-        if ($subtotal < $coupon->min_amount) {
-            return back()->with('error', "Minimum order amount for this coupon is Rp " . number_format($coupon->min_amount, 0, ',', '.'));
-        }
-        
-        // Store coupon code in session
-        Session::put('coupon_code', $coupon->code);
-        
-        return back()->with('success', 'Coupon applied successfully');
-    }
-    
-    /**
-     * Remove the applied coupon.
-     */
-    public function removeCoupon()
-    {
-        Session::forget('coupon_code');
-        return back()->with('success', 'Coupon removed');
     }
 }

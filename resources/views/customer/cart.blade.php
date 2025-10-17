@@ -167,12 +167,6 @@
                                     <span class="text-gray-600">Subtotal</span>
                                     <span class="font-medium">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                                 </div>
-                                @if($discount > 0)
-                                    <div class="flex justify-between text-sm">
-                                        <span class="text-gray-600">Diskon</span>
-                                        <span class="font-medium text-green-600">-Rp {{ number_format($discount, 0, ',', '.') }}</span>
-                                    </div>
-                                @endif
                                 <div class="flex justify-between text-sm border-t border-gray-200 pt-2">
                                     <span class="font-medium text-gray-900">Total</span>
                                     <span class="font-medium text-gray-900">Rp {{ number_format($total, 0, ',', '.') }}</span>
