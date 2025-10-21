@@ -131,66 +131,89 @@ class CartController extends Controller
      */
     public function update(Request $request)
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'size' => 'nullable|integer',
-        ]);
-        
-        $product = Product::findOrFail($request->product_id);
-        
-        // Check if product is active and in stock
-        if (!$product->is_active || $product->stock < $request->quantity) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product is not available or insufficient stock',
+        try {
+            $request->validate([
+                'product_id' => 'required|exists:products,id',
+                'quantity' => 'required|integer|min:1',
+                'size' => 'nullable',
             ]);
-        }
-        
-        if (Auth::check()) {
-            // Update database cart for logged in user
-            $query = Cart::where('user_id', Auth::id())
-                ->where('product_id', $product->id);
             
-            if ($request->has('size') && $request->size) {
-                $query->where('size', $request->size);
+            $product = Product::findOrFail($request->product_id);
+            
+            // Check if product is active and in stock
+            if (!$product->is_active || $product->stock < $request->quantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product is not available or insufficient stock',
+                ]);
             }
             
-            $query->update(['quantity' => $request->quantity]);
+            if (Auth::check()) {
+                // Update database cart for logged in user
+                $query = Cart::where('user_id', Auth::id())
+                    ->where('product_id', $product->id);
                 
-            $cartItem = $query->with('product')->first();
-                
-            $subtotal = $cartItem ? ($cartItem->product->discount_price ?? $cartItem->product->price) * $cartItem->quantity : 0;
-            $cartCount = Cart::where('user_id', Auth::id())->sum('quantity');
-        } else {
-            // Update session cart for guest
-            $cart = Session::get('cart', []);
-            
-            foreach ($cart as &$item) {
-                if ($item['product_id'] == $product->id && 
-                    (!$request->has('size') || !$request->size || $item['size'] == $request->size)) {
-                    $item['quantity'] = $request->quantity;
-                    break;
+                if ($request->filled('size')) {
+                    $query->where('size', $request->size);
                 }
+                
+                $updated = $query->update(['quantity' => $request->quantity]);
+                
+                if (!$updated) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Cart item not found',
+                    ]);
+                }
+                    
+                $cartItem = $query->with('product')->first();
+                    
+                $subtotal = $cartItem ? ($cartItem->product->discount_price ?? $cartItem->product->price) * $cartItem->quantity : 0;
+                $cartCount = Cart::where('user_id', Auth::id())->sum('quantity');
+            } else {
+                // Update session cart for guest
+                $cart = Session::get('cart', []);
+                $updated = false;
+                
+                foreach ($cart as &$item) {
+                    $sizeMatch = (!$request->filled('size') && !isset($item['size'])) || 
+                               ($request->filled('size') && isset($item['size']) && $item['size'] == $request->size);
+                               
+                    if ($item['product_id'] == $product->id && $sizeMatch) {
+                        $item['quantity'] = $request->quantity;
+                        $updated = true;
+                        break;
+                    }
+                }
+                
+                if (!$updated) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Cart item not found',
+                    ]);
+                }
+                
+                Session::put('cart', $cart);
+                
+                $price = $product->discount_price ?? $product->price;
+                $subtotal = $price * $request->quantity;
+                $cartCount = collect($cart)->sum('quantity');
             }
             
-            Session::put('cart', $cart);
-            
-            $price = $product->discount_price ?? $product->price;
-            $subtotal = $price * $request->quantity;
-            $cartCount = collect($cart)->sum('quantity');
-        }
-        
-        if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'subtotal' => $subtotal,
                 'cart_count' => $cartCount,
                 'formatted_subtotal' => 'Rp ' . number_format($subtotal, 0, ',', '.'),
             ]);
+            
+        } catch (\Exception $e) {
+            \Log::error('Cart update error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating cart: ' . $e->getMessage(),
+            ], 500);
         }
-        
-        return redirect()->route('cart.index')->with('success', 'Cart updated');
     }
     
     /**

@@ -69,7 +69,7 @@
                                 <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50" style="font-size: 11px;">Profile</a>
                                 <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50" style="font-size: 11px;">My Orders</a>
                                 <a href="{{ route('wishlist.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50" style="font-size: 11px;">Wishlist</a>
-                                <a href="{{ route('cart.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50" style="font-size: 11px;">cart</a>
+                                <a href="{{ route('cart.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50" style="font-size: 11px;">Cart</a>
                                 <div class="border-t border-gray-100 my-1"></div>
                                 <form method="POST" action="{{ route('logout') }}">@csrf
                                     <button type="submit" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50" style="font-size: 11px;">Log Out</button>

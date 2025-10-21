@@ -27,7 +27,6 @@ class Cart extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'size' => 'integer',
         'quantity' => 'integer',
     ];
 

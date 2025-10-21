@@ -188,9 +188,13 @@ document.getElementById('confirmRemoveItem').addEventListener('click', function(
 
 // Add to cart with size selection
 function addToCart(productId) {
-    currentProductId = productId;
-    // For now, redirect to product page - you can enhance this with size selection
-    window.location.href = `/products/${productId}?add_to_cart=1&quantity=1`;
+    // Find the product link in the current row and redirect to it
+    const productLink = document.querySelector(`a[href*="/products/"]`);
+    if (productLink) {
+        window.location.href = productLink.href;
+    } else {
+        window.location.href = '/products';
+    }
 }
 
 

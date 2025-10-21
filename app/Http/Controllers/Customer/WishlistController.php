@@ -112,6 +112,35 @@ class WishlistController extends Controller
     }
 
     /**
+     * Toggle product in wishlist.
+     */
+    public function toggle(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+        ]);
+
+        $productId = $request->product_id;
+        $userId = Auth::id();
+
+        if (Wishlist::isInWishlist($userId, $productId)) {
+            Wishlist::removeFromWishlist($userId, $productId);
+            return response()->json([
+                'success' => true,
+                'action' => 'removed',
+                'message' => 'Product removed from wishlist'
+            ]);
+        } else {
+            Wishlist::addToWishlist($userId, $productId);
+            return response()->json([
+                'success' => true,
+                'action' => 'added',
+                'message' => 'Product added to wishlist'
+            ]);
+        }
+    }
+
+    /**
      * Check if a product is in wishlist (for AJAX requests).
      */
     public function check(Request $request)

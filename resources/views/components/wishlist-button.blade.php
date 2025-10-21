@@ -42,7 +42,9 @@ function toggleWishlist(productId) {
     const btn = document.getElementById(`wishlist-btn-${productId}`);
     const icon = btn.querySelector('svg');
     
-    fetch('/wishlist/add', {
+    btn.disabled = true;
+    
+    fetch('/wishlist/toggle', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -50,55 +52,34 @@ function toggleWishlist(productId) {
         },
         body: JSON.stringify({ product_id: productId })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
-            // Update button to show added state
-            icon.classList.remove('text-gray-400');
-            icon.classList.add('text-red-500');
-            icon.setAttribute('fill', 'currentColor');
-            btn.title = 'Added to Wishlist';
-            
-            // Show success message
-            showToast('Product added to wishlist!', 'success');
-        } else {
-            if (data.message.includes('already')) {
-                // Already in wishlist, remove it
-                removeFromWishlist(productId);
+            if (data.action === 'added') {
+                icon.classList.remove('text-gray-400');
+                icon.classList.add('text-red-500');
+                icon.setAttribute('fill', 'currentColor');
+                btn.title = 'Remove from Wishlist';
             } else {
-                showToast(data.message, 'error');
+                icon.classList.remove('text-red-500');
+                icon.classList.add('text-gray-400');
+                icon.setAttribute('fill', 'none');
+                btn.title = 'Add to Wishlist';
             }
+            showToast(data.message, 'success');
+        } else {
+            showToast(data.message || 'Error occurred', 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        showToast('Error adding to wishlist', 'error');
-    });
-}
-
-function removeFromWishlist(productId) {
-    fetch('/wishlist/remove', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ product_id: productId })
+        showToast('Error updating wishlist', 'error');
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const btn = document.getElementById(`wishlist-btn-${productId}`);
-            const icon = btn.querySelector('svg');
-            
-            // Update button to show removed state
-            icon.classList.remove('text-red-500');
-            icon.classList.add('text-gray-400');
-            icon.setAttribute('fill', 'none');
-            btn.title = 'Add to Wishlist';
-            
-            showToast('Product removed from wishlist!', 'success');
-        }
+    .finally(() => {
+        btn.disabled = false;
     });
 }
 
@@ -125,22 +106,32 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function checkWishlistStatus(productId) {
-    fetch(`/wishlist/check?product_id=${productId}`, {
+    fetch('/wishlist/check', {
+        method: 'POST',
         headers: {
+            'Content-Type': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
+        },
+        body: JSON.stringify({ product_id: productId })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
     .then(data => {
         const btn = document.getElementById(`wishlist-btn-${productId}`);
-        const icon = btn.querySelector('svg');
-        
-        if (data.in_wishlist) {
-            icon.classList.remove('text-gray-400');
-            icon.classList.add('text-red-500');
-            icon.setAttribute('fill', 'currentColor');
-            btn.title = 'Remove from Wishlist';
+        if (btn) {
+            const icon = btn.querySelector('svg');
+            if (data.in_wishlist) {
+                icon.classList.remove('text-gray-400');
+                icon.classList.add('text-red-500');
+                icon.setAttribute('fill', 'currentColor');
+                btn.title = 'Remove from Wishlist';
+            }
         }
+    })
+    .catch(error => {
+        console.error('Error checking wishlist status:', error);
     });
 }
 </script>

@@ -105,11 +105,12 @@ Route::middleware(['auth'])->get('/orders', function () {
 // Wishlist Routes
 Route::middleware(['auth'])->prefix('wishlist')->name('wishlist.')->group(function () {
     Route::get('/', [WishlistController::class, 'index'])->name('index');
+    Route::post('/toggle', [WishlistController::class, 'toggle'])->name('toggle');
     Route::post('/add', [WishlistController::class, 'add'])->name('add');
     Route::post('/remove', [WishlistController::class, 'remove'])->name('remove');
     Route::post('/clear', [WishlistController::class, 'clear'])->name('clear');
     Route::post('/move-to-cart', [WishlistController::class, 'moveToCart'])->name('move-to-cart');
-    Route::get('/check', [WishlistController::class, 'check'])->name('check');
+    Route::post('/check', [WishlistController::class, 'check'])->name('check');
 });
 
 

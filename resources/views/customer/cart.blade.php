@@ -253,7 +253,7 @@
                 quantity: quantity
             };
             
-            if (size) {
+            if (size && size !== '' && size !== 'no-size') {
                 requestData.size = size;
             }
             
@@ -261,15 +261,27 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify(requestData)
             })
-            .then(response => response.json())
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                } else {
+                    throw new Error('Server returned non-JSON response');
+                }
+            })
             .then(data => {
                 if (data.success) {
                     // Update subtotal
-                    const subtotalId = 'subtotal-' + productId + (size ? '-' + size : '-no-size');
+                    const subtotalId = 'subtotal-' + productId + (size && size !== 'no-size' ? '-' + size : '-no-size');
                     const subtotalElement = document.getElementById(subtotalId);
                     if (subtotalElement) {
                         subtotalElement.textContent = data.formatted_subtotal;
@@ -283,7 +295,8 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan saat memperbarui keranjang');
+                alert('Terjadi kesalahan saat memperbarui keranjang. Silakan refresh halaman.');
+                window.location.reload();
             });
         }
         
@@ -294,13 +307,25 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: JSON.stringify({
                         product_id: productId
                     })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        throw new Error('Server returned non-JSON response');
+                    }
+                })
                 .then(data => {
                     if (data.success) {
                         // Reload page to update totals
@@ -311,7 +336,8 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Terjadi kesalahan saat menghapus item dari keranjang');
+                    alert('Terjadi kesalahan saat menghapus item dari keranjang. Silakan refresh halaman.');
+                    window.location.reload();
                 });
             }
         }
