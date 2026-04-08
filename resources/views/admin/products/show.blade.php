@@ -46,13 +46,13 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Price</label>
+                        <label class="block text-sm font-medium text-gray-700">Harga</label>
                         <p class="text-lg font-semibold text-green-600">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                     </div>
 
                     @if($product->discount_price)
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Discount Price</label>
+                        <label class="block text-sm font-medium text-gray-700">Harga Diskon</label>
                         <p class="text-lg font-semibold text-red-600">Rp {{ number_format($product->discount_price, 0, ',', '.') }}</p>
                     </div>
                     @endif

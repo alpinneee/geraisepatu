@@ -46,9 +46,11 @@
 
                 <!-- Price -->
                 <div>
-                    <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                    <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Harga (Rp)</label>
                     <input type="number" name="price" id="price" value="{{ old('price', $product->price) }}" 
-                           class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                           class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                           placeholder="Contoh: 150000" required>
+                    <p class="text-gray-500 text-xs mt-1">Masukkan harga dalam Rupiah (tanpa titik atau koma)</p>
                     @error('price')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -56,9 +58,11 @@
 
                 <!-- Discount Price -->
                 <div>
-                    <label for="discount_price" class="block text-sm font-medium text-gray-700 mb-2">Discount Price (Optional)</label>
+                    <label for="discount_price" class="block text-sm font-medium text-gray-700 mb-2">Harga Diskon (Rp) - Opsional</label>
                     <input type="number" name="discount_price" id="discount_price" value="{{ old('discount_price', $product->discount_price) }}" 
-                           class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                           class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="Contoh: 120000">
+                    <p class="text-gray-500 text-xs mt-1">Masukkan harga diskon dalam Rupiah (jika ada)</p>
                     @error('discount_price')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror

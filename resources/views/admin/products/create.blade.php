@@ -36,8 +36,9 @@
                 </select>
             </div>
             <div>
-                <label class="block text-sm font-medium mb-1">Harga</label>
-                <input type="number" name="price" value="{{ old('price') }}" class="w-full border rounded px-2 py-1.5 text-sm" required>
+                <label class="block text-sm font-medium mb-1">Harga (Rp)</label>
+                <input type="number" name="price" value="{{ old('price') }}" class="w-full border rounded px-2 py-1.5 text-sm" placeholder="Contoh: 150000" required>
+                <p class="text-gray-500 text-xs mt-1">Masukkan harga dalam Rupiah (tanpa titik atau koma)</p>
             </div>
             <div>
                 <label class="block text-sm font-medium mb-1">Stok</label>
